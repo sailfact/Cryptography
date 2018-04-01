@@ -1,18 +1,25 @@
+#ifndef _AFFINE_H
+#define _AFFINE_H
 #include <iostream>
 #include <bitset>
 #include "IO.h"
+
+#define ALPHASIZE 26
+#define UPPER 65
+#define LOWER 97
 
 using namespace std;
 
 class Affine
 {
     public:
-        Affine();
-        ~Affine();
-        string encrypt(string text);
-        string decrypt(string text);
+        Affine(int a, int b);
+        string encrypt(string plaintxt);
+        string decrypt(string ciphertxt);
+        int findInverse();
 
     private:
-        string plaintext;
-        string ciphertext;
-}
+        int a;
+        int b;
+};
+#endif 
