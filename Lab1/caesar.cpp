@@ -47,10 +47,10 @@ string decrypt(string text) {
 	
 	for (int i = 0; i < text.length(); i++) {
 		if (isupper(text[i])) {
-			output += char(int(text[i]-SHIFT-65)%26 +65);
+			output += char(int(text[i]-SHIFT+65)%26 +65);
 		} else {
 		
-		}	output += char(int(text[i]-SHIFT-97)%26 +97);
+		}	output += char(int(text[i]-SHIFT+97)%26 +97);
 	}
 
 	return output;

@@ -22,9 +22,9 @@ string Affine::encrypt(string plaintxt)
         if (plaintxt[i] != ' ')
         {
             if (isupper(plaintxt[i]))
-                ciphertxt += (char)((((a * plaintxt[i])+b)%ALPHASIZE)+UPPER);
+                ciphertxt += (char)(int(((a * (plaintxt[i]-UPPER) + b) % ALPHASIZE) + UPPER));
             else 
-                ciphertxt += (char)((((a * plaintxt[i])+b)%ALPHASIZE)+LOWER);
+                ciphertxt += (char)(int(((a * (plaintxt[i]-LOWER) + b) % ALPHASIZE) + LOWER));
         }
         else
         {
@@ -45,9 +45,9 @@ string Affine::decrypt(string ciphertxt)
         if (ciphertxt[i] != ' ')
         {
             if(isupper(ciphertxt[i]))
-                plaintxt += (char)(((aInv*((ciphertxt[i] - b))%ALPHASIZE))+UPPER);
+                plaintxt += (char)(int((((aInv * (ciphertxt[i] - b)) + UPPER) % ALPHASIZE) + UPPER));
             else
-                plaintxt += (char)(((aInv*((ciphertxt[i] - b))%ALPHASIZE))+LOWER);
+                plaintxt += (char)(int((((aInv * (ciphertxt[i] - b)) + LOWER) % ALPHASIZE) + LOWER));
         }
         else
         {
@@ -63,7 +63,7 @@ int Affine::findInverse()
     int inv = 0;
     for (int i = 0; i < ALPHASIZE; i++)
     {
-        if ((a*i)%26==1)
+        if ((a*i)%ALPHASIZE==1)
         {
             inv = i;
         }
