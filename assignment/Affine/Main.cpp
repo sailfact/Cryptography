@@ -12,7 +12,7 @@ int main(int argc, char const *argv[])
 
     string plaintext = io.readFile();
     string ciphertext = cipher.encrypt(plaintext);
-    io.writeFile(cipher.decrypt(ciphertext))
+    io.writeFile(cipher.decrypt(ciphertext));
 
     return 0;
 }
