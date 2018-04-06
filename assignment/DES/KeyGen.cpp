@@ -17,11 +17,12 @@ bitset<8> KeyGen::getKeyTwo()
 
 void KeyGen::generate(bitset<10> key)
 {
-    bitset<10> newKey = permutate10(key);
-    newKey = leftShift(newKey, 1);
-    keyOne = permutate8(newKey);
-    newKey = leftShift(newKey, 2);
-    keyTwo = permutate8(newKey);
+    cout << key.size() << endl;
+    key = permutate10(key);
+    key = leftShift(key);
+    keyOne = permutate8(key);
+    key = leftShift(leftShift(key)); // shift twice
+    keyTwo = permutate8(key);
 }
 
 bitset<10> KeyGen::permutate10(bitset<10> key)
@@ -29,8 +30,10 @@ bitset<10> KeyGen::permutate10(bitset<10> key)
     bitset<10> newKey;
     for (int i = 0; i < 10; i++)
     {
-        newKey[i] = key[P10[i]];
+        newKey[i] = key[P10[i]-1];
     }
+
+    cout << "P10 \t" << newKey << endl;
 
     return newKey;
 }
@@ -40,44 +43,38 @@ bitset<8> KeyGen::permutate8(bitset<10> key)
     bitset<8> newKey;
     for (int i = 0; i < 8; i++)
     {
-        newKey[P8[i]] = key[i];
+        newKey[i] = key[P8[i]];
     }
+
+    cout << "P8 \t" << newKey << endl;
 
     return newKey;
 }
 
-bitset<10> KeyGen::leftShift(bitset<10> key, int shift)
+bitset<10> KeyGen::leftShift(bitset<10> inkey)
 {
-    bitset<5> left;
-    bitset<5> right;
-
-    for (int i = 0; i < 5; i ++)
+    string key = inkey.to_string();
+    string output = "";
+    // shift left
+    for (int i = 1; i <key.size() / 2; i ++) 
     {
-        left[i] = key[i];
+        if (key.size() > i)
+        {
+            output += key[i];
+        }
     }
 
-
-    for (int i = 5; i < 10; i ++)
+    // right shift
+    for(int i = key.size()/2; i < key.size(); i++)
     {
-        right[i-5] = key[i];
+        if(key.size() > i)
+        {
+            output += key[i];
+        }
     }
 
-    cout << "Before bit shift\n" << left << "\n" << right <<endl;
-    left <<= shift;
-    right <<= shift;
-    cout << "after bit shift\n" << left << "\n" << right <<endl;
-
-    for (int i = 0; i < 5; i ++)
-    {
-        key[i] = left[i];
-    }
-
-    for (int i = 5; i < 10; i ++)
-    {
-        key[i] = right[i-5];
-    }
-
-    return key;
+    cout << output << endl;
+    return bitset<10>(output);
 }
 
 
