@@ -17,7 +17,6 @@ bitset<8> KeyGen::getKeyTwo()
 
 void KeyGen::generate(bitset<10> key)
 {
-    cout << key.size() << endl;
     key = permutate10(key);
     key = leftShift(key);
     keyOne = permutate8(key);
@@ -73,7 +72,6 @@ bitset<10> KeyGen::leftShift(bitset<10> inkey)
         }
     }
 
-    cout << output << endl;
     return bitset<10>(output);
 }
 
