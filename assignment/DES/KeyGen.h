@@ -12,14 +12,14 @@ class KeyGen
 {
     public:
         KeyGen(bitset<10> key);
-        bitset<10> leftShift(bitset<10>);
-        bitset<10> permutate10(bitset<10> key);
-        bitset<8> permutate8(bitset<10> key);
-        void generate(bitset<10> key);
-        bitset<8> getKeyOne();
-        bitset<8> getKeyTwo();  
+        string leftShift(string);
+        string permutate10(string key);
+        string permutate8(string key);
+        void generate(string key);
+        string getKeyOne();
+        string getKeyTwo();  
     private:
-        bitset<8> keyOne;
-        bitset<8> keyTwo;
+        string keyOne;
+        string keyTwo;
 };
 #endif

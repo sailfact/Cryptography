@@ -42,12 +42,12 @@ string Affine::decrypt(string ciphertxt)
 
     for (int i = 0; i < ciphertxt.length(); i ++)
     {
-        if (ciphertxt[i] != ' ')
+        if (isalpha(ciphertxt[i]))
         {
             if(isupper(ciphertxt[i]))
-                plaintxt += (char)(int((((aInv * (ciphertxt[i] - b)) + UPPER) % ALPHASIZE) + UPPER));
+                plaintxt += (char)(int(aInv * (26 + ciphertxt[i] - UPPER - b) % 26 + UPPER));
             else
-                plaintxt += (char)(int((((aInv * (ciphertxt[i] - b)) + LOWER) % ALPHASIZE) + LOWER));
+                plaintxt += (char)(int(aInv * (26 + ciphertxt[i] - LOWER - b) % 26 + LOWER));
         }
         else
         {
