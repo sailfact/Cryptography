@@ -30,15 +30,21 @@ const static int DROPTABLE[] = {
 class KeyGen
 {
     public:
-        KeyGen(bitset<10> key);
-        string leftShift(string);
-        string permutate10(string key);
-        string permutate8(string key);
-        void generate(string key);
-        string getKeyOne();
-        string getKeyTwo();
+        KeyGen(bitset<64> key);
+        void split(bitset<56> key);
+        bitset<56> combine();
+        bitset<28> leftShift(bitset<28> inKey);
+        bitset<56> permute56(bitset<64> key);
+        bitset<48> permute48(bitset<56> key);
+        void generate(bitset<64> key);
+        void KeyGen::insertKey(int index, bitset<48> newKey);
+        void addKey(bitset<48> key);
+        bitset<48> getKey(int index);
     private:
-        string keyOne;
-        string keyTwo;
+        vector<bitset<48>> keys;
+        bitset<28> left;
+        bitset<28> right;
+        int count = 0;  // keeps track of elements in
+        int round = 0;  // keeps track of shift rounds
 };
 #endif
