@@ -1,30 +1,26 @@
 #include "KeyGen.h"
 
-KeyGen::KeyGen(bitset<10> key)
+KeyGen::KeyGen(bitset<56> key)
 {
     generate(key);
 }
 
-bitset<8> KeyGen::getKeyOne()
+bitset<48> KeyGen::getKey(int index)
 {
-    return keyOne;
+    return keys.at(index);
 }
 
-bitset<8> KeyGen::getKeyTwo()
+void KeyGen::generate(bitset<56> key)
 {
-    return keyTwo;
-}
-
-void KeyGen::generate(bitset<10> key)
-{
-    key = permutate10(key);
+    key = permutate56(key);
     key = leftShift(key);
-    keyOne = permutate8(key);
+    keys[count] = permutate48(key);
+    count++;
     key = leftShift(leftShift(key)); // shift twice
-    keyTwo = permutate8(key);
+    key[count] = permutate48(key);
 }
 
-bitset<10> KeyGen::permutate10(bitset<10> key)
+bitset<56> KeyGen::permutate56(bitset<10> key)
 {
     bitset<10> newKey;
     for (int i = 0; i < 10; i++)
@@ -37,12 +33,12 @@ bitset<10> KeyGen::permutate10(bitset<10> key)
     return newKey;
 }
 
-bitset<8> KeyGen::permutate8(bitset<10> key)
+bitset<48> KeyGen::permutate48(bitset<10> key)
 {   
-    bitset<8> newKey;
-    for (int i = 0; i < 8; i++)
+    bitset<48> newKey;
+    for (int i = 0; i < 48; i++)
     {
-        newKey[i] = key[P8[i]];
+        newKey[i] = key[P8[i]-1];
     }
 
     cout << "P8 \t" << newKey << endl;
@@ -50,30 +46,10 @@ bitset<8> KeyGen::permutate8(bitset<10> key)
     return newKey;
 }
 
-bitset<10> KeyGen::leftShift(bitset<10> inkey)
+bitset<56> KeyGen::leftShift(bitset<10> inkey)
 {
-    string key = inkey.to_string();
-    string output = "";
-    // shift left
-    for (int i = 1; i <key.size() / 2; i ++) 
-    {
-        if (key.size() > i)
-        {
-            output += key[i];
-        }
-    }
-
-    // right shift
-    for(int i = key.size()/2; i < key.size(); i++)
-    {
-        if(key.size() > i)
-        {
-            output += key[i];
-        }
-    }
-
-    return bitset<10>(output);
+    bitset<5> left(10101);
+    bitset<5> right(01001);
+    left =  left<<1 | left >>4;
+    right = right<<1 | right >>5;
 }
-
-
-
