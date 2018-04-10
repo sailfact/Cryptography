@@ -4,29 +4,14 @@
 #include "KeyGen.h"
 #include <bitset>
 
-<<<<<<< HEAD
 using namespace std;
 
-class DES {
-    public:
-        DES();
-        string IP(string plaintext);
-        string IPInverse(string plaintext);
-        void fk();
-        string F(string input, string key);
-        void SW();
-    private:
-        string plaintext;
-        string left;
-        string right;
-        string ciphertext;
-};
-=======
 const static int S1[4][16] = {
     {14,4,13,1,2,15,11,8,3,10,6,12,5,9,0,7},
     {0,15,7,4,14,2,13,10,3,6,12,11,9,5,3,8},
     {4,1,14,8,13,6,2,11,15,12,9,7,3,10,5,0},
     {15,12,8,2,4,9,1,7,5,11,3,14,10,0,6,13}
+};
 const static int S2[4][16] = {
     {15,1,8,14,6,11,3,4,9,7,2,13,12,0,5,10},
     {3,13,4,7,15,2,8,14,12,0,1,10,6,9,11,5},
@@ -70,5 +55,18 @@ const static int S8[4][16] = {
     {2,1,14,7,4,10,8,13,15,12,9,9,3,5,6,11}
 };
 
->>>>>>> 336bd0af0888acf6dde7d0d6bf61b2ade59a706c
+class DES {
+    public:
+        DES();
+        string IP(string plaintext);
+        string IPInverse(string plaintext);
+        void fk();
+        string F(string input, string key);
+        void SW();
+    private:
+        string plaintext;
+        string left;
+        string right;
+        string ciphertext;
+};
 #endif
