@@ -17,7 +17,7 @@ Affine::Affine(int a, int b)
 string Affine::encrypt(string plaintxt)
 {
     string ciphertxt = "";
-    for (int i = 0; i < plaintxt.length(); i++)
+    for (int i = 0; i < plaintxt.size(); i++)
     {
         if (plaintxt[i] != ' ')
         {
@@ -40,7 +40,7 @@ string Affine::decrypt(string ciphertxt)
     string plaintxt = "";
     int aInv = findInverse();
 
-    for (int i = 0; i < ciphertxt.length(); i ++)
+    for (int i = 0; i < ciphertxt.size(); i ++)
     {
         if (isalpha(ciphertxt[i]))
         {

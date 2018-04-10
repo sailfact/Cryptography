@@ -1,7 +1,7 @@
 #ifndef _AFFINE_H
 #define _AFFINE_H
 #include <iostream>
-#include <bitset>
+#include <string>
 #include "IO.h"
 
 #define ALPHASIZE 26

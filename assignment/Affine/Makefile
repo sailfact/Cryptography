@@ -2,33 +2,23 @@
 # Affine Cipher
 # Author : Ross Curley
 # stdID : 19098081
-CC = g++
-LD = g++
-FLAGS = -g -Wall
-RM = /bin/rm -f
+CC=g++
+CFLAGS= 
+OBJECTS=Main.o Affine.o IO.o 
+EXEC=Affine
 
-COMPILE = $(CC) $(FLAGS) -CC
-OBJ := $(filter-out main.o, $(patsubst %.cpp,%.o,$(wildcard *.cpp)))
-EXEC = Affine
+$(EXEC) : $(OBJECTS)
+	$(CC) $(OBJECTS) -o $(EXEC)
 
-all: $(EXEC)
+Main.o : Main.cpp Affine.h IO.h
+	$(CC) -c Main.cpp $(CFLAGS)
 
-%.o:%.cpp
-	$(COMPILE) $<
+Affine.o : Affine.cpp Affine.h IO.h
+	$(CC) -c Affine.cpp $(CFLAGS)
 
-$(EXEC): main.o libaffine.a
-	$(CC) $(CFLAGS) main.o libaffine.a -o $@
+IO.o : IO.cpp IO.h
+	$(CC) -c IO.cpp $(CFLAGS)
 
-libusp.a: $(OBJ)
-	ar crs libaffine.a $(OBJ)
-
-.PHONY: clean
-clean:
-	$(RM) $(OBJ)
-
-.PHONY : cleanall
-cleanall:
-	$(RM) *.o
-	$(RM) $(EXEC)
-	$(RM) libaffine.a
+clean :
+	rm -f $(EXEC) $(EXEC).exe $(OBJECTS)
 	

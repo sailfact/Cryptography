@@ -9,7 +9,7 @@ IO::IO(string inFile, string outFile)
 string IO::readFile()
 {
     ifstream ifs;
-    ifs.open(inFile, ofstream::in);
+    ifs.open(inFile);
     string text((istreambuf_iterator<char>(ifs)),
                  istreambuf_iterator<char>());
 
@@ -20,7 +20,10 @@ string IO::readFile()
 void IO::writeFile(string text)
 {
     ofstream ofs;
-    ofs.open(outFile, ofstream::out);
-    ofs << text;
+    ofs.open(outFile, std::ofstream::out);
+    if (ofs)
+    {
+        ofs << text;
+    }
     ofs.close();
 }

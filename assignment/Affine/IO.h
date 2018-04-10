@@ -3,6 +3,8 @@
 #include <iostream>
 #include <fstream>
 #include <streambuf>
+#include <string>
+#define BUFSIZE 1024
 
 using namespace std;
 class IO {
