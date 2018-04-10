@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <streambuf>
+#include <string>
 
 using namespace std;
 class IO {

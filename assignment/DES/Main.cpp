@@ -4,10 +4,10 @@
 
 int main()
 {
-    KeyGen kg(1100011110);
+    KeyGen kg(9123645756987);
 
-    std::cout << kg.getKeyOne() << std::endl;
-    std::cout << kg.getKeyTwo() << std::endl;
+    for (int i = 0; i < 16; i++)
+        std::cout << kg.getKey(i) << std::endl;
 
     return 0;
 }
