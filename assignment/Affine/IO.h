@@ -4,7 +4,10 @@
 #include <fstream>
 #include <streambuf>
 #include <string>
+<<<<<<< HEAD
 #define BUFSIZE 1024
+=======
+>>>>>>> 336bd0af0888acf6dde7d0d6bf61b2ade59a706c
 
 using namespace std;
 class IO {
