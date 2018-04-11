@@ -57,13 +57,14 @@ bitset<56> KeyGen::permute56(bitset<64> key)
 {
     cout << "p56" << endl;
     string newKey = "";
+    string strKey = key.to_string();
 
     for (int i = 0; i < 56; i++)
     {
-        cout << "for :" << i << endl;
-        newKey += key[DROPTABLE[i]-1];
+        newKey += strKey.at(DROPTABLE[i]-1);
+        std::cout << newKey << '\n';
     }
-
+    std::cout << newKey << '\n';
     return bitset<56> (newKey);
 }
 ///
@@ -76,10 +77,11 @@ bitset<48> KeyGen::permute48(bitset<56> key)
 {
     cout << "p48" << endl;
     string newKey = "";
+    string strKey = key.to_string();
 
     for (int i = 0; i < 48; i++)
     {
-        newKey += key[DBOX[i]-1];
+        newKey += strKey.at(DBOX[i]-1);
     }
 
     return bitset<48> (newKey);
