@@ -1,6 +1,5 @@
-#ifndef DES_H
-#define DES_H
-#include "IO.h"
+#ifndef _DES_H
+#define _DES_H
 #include "KeyGen.h"
 #include <bitset>
 
@@ -55,14 +54,15 @@ const static int S8[4][16] = {
     {2,1,14,7,4,10,8,13,15,12,9,9,3,5,6,11}
 };
 
-class DES {
+class DES
+{
     public:
         DES();
-        string IP(string plaintext);
-        string IPInverse(string plaintext);
-        void fk();
-        string F(string input, string key);
-        void SW();
+        void cipher();
+        void mixer();
+        void swapper();
+        void function();
+        void substitute();
     private:
         string plaintext;
         string left;

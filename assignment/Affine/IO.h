@@ -6,7 +6,8 @@
 #include <string>
 
 using namespace std;
-class IO {
+class IO
+{
     public:
         IO(string inFile, string outFile);
         string readFile();

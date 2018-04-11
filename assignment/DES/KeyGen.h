@@ -1,5 +1,5 @@
-#ifndef KEYGEN_H
-#define KEYGEN_H
+#ifndef _KEYGEN_H
+#define _KEYGEN_H
 #include <iostream>
 #include <bitset>
 #include <vector>
@@ -17,7 +17,7 @@ const static int DBOX[48] = {
     34,53,46,42,50,36,29,32
 };
 // used for permuting the initial 64 bit key
-const static int DROPTABLE[] = {
+const static int DROPTABLE[56] = {
     57,49,41,33,25,17, 9, 1,
     58,50,42,34,26,18,10, 2,
     59,51,43,35,27,19,11, 3,
@@ -33,18 +33,16 @@ class KeyGen
         KeyGen(bitset<64> key);
         void split(bitset<56> key);
         bitset<56> combine();
-        bitset<28> leftShift(bitset<28> inKey);
+        void leftShift(int round);
         bitset<56> permute56(bitset<64> key);
         bitset<48> permute48(bitset<56> key);
         void generate(bitset<64> key);
-        void KeyGen::insertKey(int index, bitset<48> newKey);
         void addKey(bitset<48> key);
         bitset<48> getKey(int index);
     private:
-        vector<bitset<48>> keys;
+        bitset<48> keys[16];
         bitset<28> left;
         bitset<28> right;
-        int count = 0;  // keeps track of elements in
-        int round = 0;  // keeps track of shift rounds
+        int count;  // keeps track of elements in
 };
 #endif
