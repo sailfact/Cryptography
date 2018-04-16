@@ -3,7 +3,7 @@
 DES::DES(string plaintext)
 {
     plainBlock = bitset<64>(plaintext);
-    keys("This key");
+    keys = KeyGen(10290129219);
 }
 
 void DES::cipher()
@@ -36,14 +36,14 @@ void DES::initialPermute()
 
 void DES::finalPermute()
 {
-    string newKey = "";
+    string newBlock = "";
     string strKey = cipherBlock.to_string();
 
     for (int i = 0; i < 64; i++)
     {
-        newKey += strKey.at(FP[i]-1);
+        newBlock += strKey.at(FP[i]-1);
     }
-    cipherBlock = bitset<64> (newKey);
+    cipherBlock = bitset<64> (newBlock);
 }
 
 void DES::split()
@@ -81,10 +81,10 @@ void DES::mixer(bitset<48> key)
 }
 bitset<32> DES::function(bitset<32> block, bitset<48> key)
 {
-    bitset<48> temp1 = permuteDBOX(block);
+    bitset<48> temp1 = permuteExpansion(block);
     bitset<48> temp2 = exclusiveOr48(temp1, key);
     bitset<48> temp3 = substitute(temp2);
-    return permuteStraight(temp3)
+    return permuteStraight(temp3);
 }
 
 bitset<48> DES::substitute(bitset<48> block)
@@ -105,7 +105,7 @@ bitset<48> DES::permuteExpansion(bitset<32> block)
         newBlock += strBlock.at(EXPANSION[i]-1);
     }
 
-    return bitset<48> (newKey);
+    return bitset<48> (newBlock);
 }
 
 bitset<32> DES::permuteStraight(bitset<48> block)
@@ -118,5 +118,5 @@ bitset<32> DES::permuteStraight(bitset<48> block)
         newBlock += strBlock.at(STRAIGHT[i]-1);
     }
 
-    return bitset<32> (newKey);
+    return bitset<32> (newBlock);
 }

@@ -1,6 +1,14 @@
 #include "KeyGen.h"
 ///
 /// KeyGen::KeyGen
+/// default constructor for KeyGen
+///
+KeyGen::KeyGen()
+{
+
+}
+///
+/// KeyGen::KeyGen
 /// constructor for KeyGen
 /// calls starting function generate
 ///

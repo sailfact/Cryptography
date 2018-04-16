@@ -54,18 +54,18 @@ const static int S8[4][16] = {
     {2,1,14,7,4,10,8,13,15,12,9,9,3,5,6,11}
 };
 
-const static IP[64] = {
+const static int IP[64] = {
     58,50,42,34,26,18,10, 2,
     60,52,44,36,28,20,12, 4,
     62,54,46,38,30,22,14, 6,
     64,56,48,40,32,24,16, 8,
-    57,49,41,33,25,17,09, 1,
+    57,49,41,33,25,17, 9, 1,
     59,51,43,35,27,19,11, 3,
     61,53,45,37,29,21,13, 5,
-    {63,55,47,39,31,23,15, 7
+    63,55,47,39,31,23,15, 7
 };
 
-const static FP[64] = {
+const static int FP[64] = {
     40, 8,48,16,56,24,64,32,
     39, 7,47,15,55,23,63,31,
     38, 6,46,14,54,22,62,30,
@@ -76,7 +76,7 @@ const static FP[64] = {
     33, 1,41, 9,49,17,57,25
 };
 
-const static EXPANSION[48] = {
+const static int EXPANSION[48] = {
     32, 1, 2, 3, 4, 5,
      4, 5, 6, 7, 8, 9,
      8, 9,10,11,12,13,
@@ -87,7 +87,7 @@ const static EXPANSION[48] = {
     28,29,30,31,32, 1
 };
 
-const static STRAIGHT[32] = {
+const static int STRAIGHT[32] = {
     16,07,20,21,29,12,28,17,
      1,15,23,26, 5,18,31,10,
      2, 8,24,14,32,27, 3, 9,
@@ -101,10 +101,12 @@ class DES
         void cipher();
         void initialPermute();
         void finalPermute();
-        void mixer();
-        bitset<32> function(bitset<32> block, bitset<48> key)
+        void mixer(bitset<48> key);
+        bitset<32> function(bitset<32> block, bitset<48> key);
         void swapper();
         void permute();
+        void split();
+        void combine();
         bitset<32> exclusiveOr32(bitset<32> blockOne, bitset<32> blockTwo);
         bitset<48> exclusiveOr48(bitset<48> blockOne, bitset<48> blockTwo);
         bitset<48> permuteExpansion(bitset<32> block);
