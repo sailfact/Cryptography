@@ -109,7 +109,7 @@ void KeyGen::split(bitset<56> key)
     cout << "split" << endl;
     string keystr = key.to_string();
 
-    left = bitset<28>(keystr.substr(0, keystr.length()/2-1));
+    left = bitset<28>(keystr.substr(0, (keystr.length()/2)-1));
     right = bitset<28>(keystr.substr(keystr.length()/2, keystr.length()-1));
 }
 ///
