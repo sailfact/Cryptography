@@ -65,8 +65,6 @@ class DES
         void substitute();
     private:
         string plaintext;
-        string left;
-        string right;
         string ciphertext;
 };
 #endif
