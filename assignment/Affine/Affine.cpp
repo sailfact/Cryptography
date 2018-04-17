@@ -19,11 +19,11 @@ string Affine::encrypt(string plaintxt)
     string ciphertxt = "";
     for (int i = 0; i < plaintxt.size(); i++)
     {
-        if (plaintxt[i] != ' ')
+        if (isalpha(plaintxt[i]))
         {
             if (isupper(plaintxt[i]))
                 ciphertxt += (char)(int(((a * (plaintxt[i]-UPPER) + b) % ALPHASIZE) + UPPER));
-            else 
+            else
                 ciphertxt += (char)(int(((a * (plaintxt[i]-LOWER) + b) % ALPHASIZE) + LOWER));
         }
         else
@@ -45,9 +45,9 @@ string Affine::decrypt(string ciphertxt)
         if (isalpha(ciphertxt[i]))
         {
             if(isupper(ciphertxt[i]))
-                plaintxt += (char)(int(aInv * (26 + ciphertxt[i] - UPPER - b) % 26 + UPPER));
+                plaintxt += (char)(int(aInv * (ALPHASIZE + ciphertxt[i] - UPPER - b) % ALPHASIZE + UPPER));
             else
-                plaintxt += (char)(int(aInv * (26 + ciphertxt[i] - LOWER - b) % 26 + LOWER));
+                plaintxt += (char)(int(aInv * (ALPHASIZE + ciphertxt[i] - LOWER - b) % ALPHASIZE + LOWER));
         }
         else
         {

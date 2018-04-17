@@ -1,26 +1,30 @@
 #include "IO.h"
 
-IO::IO(string inFile, string outFile)
-{
-    this->inFile = inFile;
-    this->outFile = outFile;
-}
-
-string IO::readFile()
+string readFile()
 {
     ifstream ifs;
-    ifs.open(inFile, ios::in);
-    string text((istreambuf_iterator<char>(ifs)),
-                 istreambuf_iterator<char>());
-
+    string text;
+    char data[255];
+    ifs.open("infile.txt");
+    if (ifs)
+    {
+        while (ifs >> data)
+        {
+            text += data;
+        }
+    }
+    else
+    {
+        std::cerr << "Unable to open file" << '\n';
+    }
     ifs.close();
     return text;
 }
 
-void IO::writeFile(string text)
+void writeFile(string text, string file)
 {
     ofstream ofs;
-    ofs.open(outFile, ios::out);
+    ofs.open("outfile.txt");
     if (ofs.is_open())
     {
         ofs << text;
@@ -28,6 +32,6 @@ void IO::writeFile(string text)
     }
     else
     {
-        cout << "unable to open file" << outFile <<endl;
+        cout << "unable to open file" << file <<endl;
     }
 }
