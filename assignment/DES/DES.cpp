@@ -1,11 +1,15 @@
 #include "DES.h"
-
+///
+/// DES::DES
+///
 DES::DES(string plaintext)
 {
     plainBlock = bitset<64>(plaintext);
     keys = KeyGen(10290129219);
 }
-
+///
+/// DES::ciphers
+///
 void DES::cipher()
 {
     initialPermute();
