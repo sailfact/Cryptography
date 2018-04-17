@@ -3,7 +3,11 @@
 DES::DES(string plaintext)
 {
     plainBlock = bitset<64>(plaintext);
+<<<<<<< HEAD
     keys = KeyGen("0/?2");
+=======
+    keys = KeyGen(10290129219);
+>>>>>>> 225b7567206d0bb3839421bf93a0fc19920fb1a8
 }
 
 void DES::cipher()
@@ -87,10 +91,15 @@ bitset<32> DES::function(bitset<32> block, bitset<48> key)
     return permuteStraight(temp3);
 }
 
+<<<<<<< HEAD
 bitset<32> DES::substitute(bitset<48> block)
 {
     int row, col;
     string strBlock = block.to_string();
+=======
+bitset<48> DES::substitute(bitset<48> block)
+{
+>>>>>>> 225b7567206d0bb3839421bf93a0fc19920fb1a8
     for (int i = 0; i < 8; i++)
     {
         
