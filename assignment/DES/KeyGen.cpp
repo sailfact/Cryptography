@@ -3,9 +3,11 @@
 /// KeyGen::KeyGen
 /// default constructor for KeyGen
 ///
-KeyGen::KeyGen()
+KeyGen::KeyGen(string key)
 {
-
+    bitset<64> key(key);
+    this->count = 0;
+    generate(key);
 }
 ///
 /// KeyGen::KeyGen
@@ -14,7 +16,6 @@ KeyGen::KeyGen()
 ///
 KeyGen::KeyGen(bitset<64> key)
 {
-    cout << "constructor" << endl;
     this->count = 0;
     generate(key);
 }
@@ -44,7 +45,6 @@ bitset<48> KeyGen::getKey(int index)
 ///
 void KeyGen::generate(bitset<64> key)
 {
-    cout << "generate" << endl;
     bitset<56> cipherKey = permute56(key);
     split(cipherKey);
     bitset<48> tempKey;
@@ -63,7 +63,6 @@ void KeyGen::generate(bitset<64> key)
 ///
 bitset<56> KeyGen::permute56(bitset<64> key)
 {
-    cout << "p56" << endl;
     string newKey = "";
     string strKey = key.to_string();
 
@@ -83,7 +82,6 @@ bitset<56> KeyGen::permute56(bitset<64> key)
 ///
 bitset<48> KeyGen::permute48(bitset<56> key)
 {
-    cout << "p48" << endl;
     string newKey = "";
     string strKey = key.to_string();
 
@@ -101,7 +99,6 @@ bitset<48> KeyGen::permute48(bitset<56> key)
 ///
 void KeyGen::leftShift(int round)
 {
-    cout << "ls" << endl;
     int shift = SHIFT[round];   // get the shift amount
 
     left = left<<shift | left>>(left.size()-shift);
@@ -114,7 +111,6 @@ void KeyGen::leftShift(int round)
 ///
 void KeyGen::split(bitset<56> key)
 {
-    cout << "split" << endl;
     string keystr = key.to_string();
 
     left = bitset<28>(keystr.substr(0, (keystr.length()/2)-1));
@@ -127,7 +123,6 @@ void KeyGen::split(bitset<56> key)
 ///
 bitset<56> KeyGen::combine()
 {
-    cout << "combine" << endl;
     string keystr = "";
     string l = left.to_string();
     string r = right.to_string();
