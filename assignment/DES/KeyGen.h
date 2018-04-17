@@ -30,6 +30,7 @@ const static int DROPTABLE[56] = {
 class KeyGen
 {
     public:
+        KeyGen();
         KeyGen(bitset<64> key);
         void split(bitset<56> key);
         bitset<56> combine();
