@@ -67,9 +67,7 @@ bitset<56> KeyGen::permute56(bitset<64> key)
     for (int i = 0; i < 56; i++)
     {
         newKey += strKey.at(DROPTABLE[i]-1);
-        std::cout << newKey << '\n';
     }
-    std::cout << newKey << '\n';
     return bitset<56> (newKey);
 }
 ///

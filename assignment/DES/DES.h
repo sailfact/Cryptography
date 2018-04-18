@@ -3,6 +3,7 @@
 #include "KeyGen.h"
 #include "SBOX.h"
 #include <bitset>
+#include <sstream>
 
 using namespace std;
 
@@ -50,27 +51,24 @@ class DES
 {
     public:
         DES();
-        DES(string plaintext);
-        void cipher();
-        void initialPermute();
-        void finalPermute();
+        string encrypt(string plaintext);
+        string decrypt(string ciphertext);
+        bitset<64> cipher(bitset<64> inBlock, KeyGen keys);
+        bitset<64> initialPermute(bitset<64> inBlock);
+        bitset<64> finalPermute(bitset<64> inBlock);
+        void split(bitset<64> block);
+        bitset<64> combine();
         void mixer(bitset<48> key);
+        void swapper();    
         bitset<32> function(bitset<32> block, bitset<48> key);
-        void swapper();
-        void permute();
-        void split();
-        void combine();
-        bitset<32> exclusiveOr32(bitset<32> blockOne, bitset<32> blockTwo);
-        bitset<48> exclusiveOr48(bitset<48> blockOne, bitset<48> blockTwo);
+        bitset<32> substitute(bitset<48> block);
+        bitset<4> sub(string subBlock, int box);
         bitset<48> permuteExpansion(bitset<32> block);
         bitset<32> permuteStraight(bitset<32> block);
-        bitset<32> substitute(bitset<48> block);
-
+        bitset<32> exclusiveOr32(bitset<32> blockOne, bitset<32> blockTwo);
+        bitset<48> exclusiveOr48(bitset<48> blockOne, bitset<48> blockTwo);
+        
     private:
-        string plaintext;
-        string ciphertext;
-        bitset<64> plainBlock;
-        bitset<64> cipherBlock;
         KeyGen keys;
         bitset<32> leftBlock;
         bitset<32> rightBlock;

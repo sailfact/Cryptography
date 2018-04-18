@@ -1,8 +1,14 @@
-#ifndef IO_H
-#define IO_H
+#ifndef _IO_H
+#define _IO_H
 #include <iostream>
+#include <fstream>
+#include <streambuf>
+#include <string>
 
-class IO{
+using namespace std;
 
-};
+string readFile();
+void writeFile(string text);
+
+
 #endif

@@ -4,18 +4,18 @@ string readFile()
 {
     ifstream ifs;
     string text;
-    char data[255];
+    char c;
     ifs.open("infile.txt");
     if (ifs)
     {
-        while (ifs >> data)
+        while (ifs.get(c))
         {
-            text += data;
+            text += c;
         }
     }
     else
     {
-        std::cerr << "Unable to open file" << '\n';
+        cerr << "Unable to open file" << '\n';
     }
     ifs.close();
     return text;

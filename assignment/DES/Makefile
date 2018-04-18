@@ -1,22 +1,22 @@
-CC = g++
-CFLAGS  = -g -Wall
+CC=g++
+CFLAGS= 
+OBJECTS=DES.o IO.o KeyGen.o Main.o
+EXEC=Des
 
-default: des
-
-des:  Main.o DES.o KeyGen.o IO.o
-	$(CC) $(CFLAGS) -o des Main.o DES.o KeyGen.o IO.o
+$(EXEC) : $(OBJECTS)
+	$(CC) $(OBJECTS) -o $(EXEC)
 
 Main.o: Main.cpp DES.h KeyGen.h IO.h
-	$(CC) $(CFLAGS) -c Main.cpp
+	$(CC) -c Main.cpp 
 
-DES.o:  DES.cpp KeyGen.h SBOX.h
-	$(CC) $(CFLAGS) -c DES.cpp
+DES.o: DES.h KeyGen.h SBOX.h DES.cpp 
+	$(CC) -c DES.cpp 
 
-KeyGen.o:  KeyGen.cpp KeyGen.h
-	$(CC) $(CFLAGS) -c KeyGen.cpp
+KeyGen.o: KeyGen.h KeyGen.cpp 
+	$(CC) -c KeyGen.cpp 
 
-IO.o:  IO.cpp IO.h
-	$(CC) $(CFLAGS) -c IO.cpp
+IO.o: IO.h IO.cpp 
+	$(CC) -c IO.cpp
 
 clean:
-	$(RM) cdes *.o *~ des
+	rm -f $(EXEC) $(OBJECTS)
