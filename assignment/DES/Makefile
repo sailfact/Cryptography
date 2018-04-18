@@ -9,7 +9,7 @@ des:  Main.o DES.o KeyGen.o IO.o
 Main.o: Main.cpp DES.h KeyGen.h IO.h
 	$(CC) $(CFLAGS) -c Main.cpp
 
-DES.o:  DES.cpp KeyGen.h
+DES.o:  DES.cpp KeyGen.h SBOX.h
 	$(CC) $(CFLAGS) -c DES.cpp
 
 KeyGen.o:  KeyGen.cpp KeyGen.h

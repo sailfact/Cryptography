@@ -3,11 +3,9 @@
 /// KeyGen::KeyGen
 /// default constructor for KeyGen
 ///
-KeyGen::KeyGen(string key)
+KeyGen::KeyGen()
 {
-    bitset<64> key(key);
-    this->count = 0;
-    generate(key);
+   
 }
 ///
 /// KeyGen::KeyGen

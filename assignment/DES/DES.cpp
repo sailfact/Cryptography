@@ -2,6 +2,13 @@
 ///
 /// DES::DES
 ///
+DES::DES()
+{
+    
+}
+///
+/// DES::DES
+///
 DES::DES(string plaintext)
 {
     plainBlock = bitset<64>(plaintext);
@@ -87,23 +94,13 @@ bitset<32> DES::function(bitset<32> block, bitset<48> key)
 {
     bitset<48> temp1 = permuteExpansion(block);
     bitset<48> temp2 = exclusiveOr48(temp1, key);
-    bitset<48> temp3 = substitute(temp2);
+    bitset<32> temp3 = substitute(temp2);
     return permuteStraight(temp3);
 }
 
-bitset<48> DES::substitute(bitset<32> block)
+bitset<32> DES::substitute(bitset<48> block)
 {
-    int row, col, value;
-    int startIdx, endIdx;
-    string strBlock = block.to_string();
-    for (int i = 0; i < 8; i++)
-    {
-
-        // get row and col
-
-        value = SBOX[i][row][col];
-        // assign value to outbock
-    }
+    
 }
 
 bitset<48> DES::permuteExpansion(bitset<32> block)
