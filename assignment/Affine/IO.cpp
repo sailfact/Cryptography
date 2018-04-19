@@ -1,6 +1,9 @@
 /// IO.cpp
 #include "IO.h"
-
+///
+/// readFile
+/// takes a filename and reads it char by char
+/// into a string that is reaturned
 string readFile(const char *infile)
 {
     ifstream ifs;
@@ -21,7 +24,10 @@ string readFile(const char *infile)
     ifs.close();
     return text;
 }
-
+///
+/// writeFile
+/// takes a string and a filename and writes the
+/// string to the file
 void writeFile(string text, const char *outfile)
 {
     ofstream ofs;
