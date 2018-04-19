@@ -2,11 +2,12 @@
 ///
 /// DES::DES
 ///
-DES::DES()
+DES::DES(unsigned long long key)
 {
-    keys = KeyGen(973846494795);
+    keys = KeyGen(key);
 }
-
+///
+/// DES::encrypt
 string DES::encrypt(string plaintext)
 {
     string block = "";
@@ -14,7 +15,7 @@ string DES::encrypt(string plaintext)
     int blockCount = 1;
     for (int i = 0; i < plaintext.length(); i ++)
     {
-        block += bitset<8>(plaintext[i]).to_string();  
+        block += bitset<8>(plaintext[i]).to_string();
         if (blockCount == 8)
         {
             ciphertext += cipher(bitset<64>(block), keys).to_string();
@@ -37,7 +38,31 @@ string DES::encrypt(string plaintext)
 
 string DES::decrypt(string ciphertext)
 {
+    KeyGen temp = invertKeys(keys);
+    string block = "";
+    string plaintext = "";
+    int blockCount = 1;
+    for (int i = 0; i < ciphertext.length(); i ++)
+    {
+        block += bitset<8>(ciphertext[i]).to_string();
+        if (blockCount == 8)
+        {
+            plaintext += cipher(bitset<64>(block), keys).to_string();
+            blockCount = 1;
+        }
+        else if (i == ciphertext.length() -1 && blockCount != 8)
+        {
+            // pad block with 0's
+            for (int j = 0; j < blockCount; j++)
+            {
+                block +='0';
+            }
+            plaintext += cipher(bitset<64>(block), keys).to_string();
+        }
+        blockCount++;
+    }
 
+    return convertBack(plaintext);
 }
 ///
 /// DES::cipher
@@ -238,4 +263,31 @@ bitset<32> DES::exclusiveOr32(bitset<32> blockOne, bitset<32> blockTwo)
 bitset<48> DES::exclusiveOr48(bitset<48> blockOne, bitset<48> blockTwo)
 {
     return blockOne ^= blockTwo;
+}
+
+KeyGen DES::invertKeys(KeyGen iKeys)
+{
+    KeyGen newKeys;
+
+    for (int i = 15; i >= 0; i --)
+    {
+        newKeys.addKey(iKeys.getKey(i));
+    }
+
+    return newKeys;
+}
+
+string DES::convertBack(string plaintext)
+{
+    stringstream sstream(plaintext);
+    string output;
+    while(sstream.good())
+    {
+        bitset<8> bits;
+        sstream >> bits;
+        char c = char(bits.to_ulong());
+        output += c;
+    }
+
+    return output;
 }

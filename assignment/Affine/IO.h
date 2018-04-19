@@ -7,8 +7,8 @@
 
 using namespace std;
 
-string readFile();
-void writeFile(string text);
+string readFile(const char *infile);
+void writeFile(string text, const char *outfile);
 
 
 #endif

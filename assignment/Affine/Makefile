@@ -1,10 +1,10 @@
-# Makefile for Cryptography Assignment 
+# Makefile for Cryptography Assignment
 # Affine Cipher
 # Author : Ross Curley
 # stdID : 19098081
 CC=g++
-CFLAGS= 
-OBJECTS=Main.o Affine.o IO.o 
+CFLAGS=
+OBJECTS=Main.o Affine.o IO.o
 EXEC=Affine
 
 $(EXEC) : $(OBJECTS)
@@ -20,5 +20,4 @@ IO.o : IO.cpp IO.h
 	$(CC) -c IO.cpp $(CFLAGS)
 
 clean :
-	rm -f $(EXEC) $(EXEC).exe $(OBJECTS)
-	
+	rm -f $(EXEC) $(EXEC).exe $(OBJECTS) encrypt.txt decrypt.txt

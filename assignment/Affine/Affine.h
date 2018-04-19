@@ -5,8 +5,8 @@
 #include "IO.h"
 
 #define ALPHASIZE 26
-#define UPPER 65
-#define LOWER 97
+#define UPPER 65    //upper starts here in ascii
+#define LOWER 97    //lower starts here in ascii
 
 using namespace std;
 
@@ -22,4 +22,4 @@ class Affine
         int a;
         int b;
 };
-#endif 
+#endif

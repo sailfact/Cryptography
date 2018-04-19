@@ -1,5 +1,9 @@
 #include "Affine.h"
-
+///
+/// Affine::Affine
+/// Constructor for Affine
+/// assigns a and b keys
+/// and checks their validity
 Affine::Affine(int a, int b)
 {
     // check if a and b are valid yet
@@ -13,7 +17,9 @@ Affine::Affine(int a, int b)
         throw "Error: Invalid Keys!!!";
     }
 }
-
+///
+/// Affine::encrypt
+/// encrypts a given string using the affine cipher
 string Affine::encrypt(string plaintxt)
 {
     string ciphertxt = "";
@@ -26,7 +32,7 @@ string Affine::encrypt(string plaintxt)
             else
                 ciphertxt += (char)(int(((a * (plaintxt[i]-LOWER) + b) % ALPHASIZE) + LOWER));
         }
-        else
+        else    // if it's net a letter add it anyway
         {
             ciphertxt += plaintxt[i];
         }
@@ -34,11 +40,13 @@ string Affine::encrypt(string plaintxt)
 
     return ciphertxt;
 }
-
+///
+/// Affine::decrypt
+/// decrypts a given string using the affine cipher
 string Affine::decrypt(string ciphertxt)
 {
     string plaintxt = "";
-    int aInv = findInverse();
+    int aInv = findInverse();   // get a inverse
 
     for (int i = 0; i < ciphertxt.size(); i ++)
     {
@@ -49,7 +57,7 @@ string Affine::decrypt(string ciphertxt)
             else
                 plaintxt += (char)(int(aInv * (ALPHASIZE + ciphertxt[i] - LOWER - b) % ALPHASIZE + LOWER));
         }
-        else
+        else    // if it's net a letter add it anyway
         {
             plaintxt += ciphertxt[i];
         }
@@ -57,7 +65,9 @@ string Affine::decrypt(string ciphertxt)
 
     return plaintxt;
 }
-
+///
+/// Affine::findInverse
+/// finds the multiplicitive inverse of key a
 int Affine::findInverse()
 {
     int inv = 0;

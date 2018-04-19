@@ -50,7 +50,7 @@ const static int STRAIGHT[32] = {
 class DES
 {
     public:
-        DES();
+        DES(unsigned long long key);
         string encrypt(string plaintext);
         string decrypt(string ciphertext);
         bitset<64> cipher(bitset<64> inBlock, KeyGen keys);
@@ -59,7 +59,7 @@ class DES
         void split(bitset<64> block);
         bitset<64> combine();
         void mixer(bitset<48> key);
-        void swapper();    
+        void swapper();
         bitset<32> function(bitset<32> block, bitset<48> key);
         bitset<32> substitute(bitset<48> block);
         bitset<4> sub(string subBlock, int box);
@@ -67,7 +67,9 @@ class DES
         bitset<32> permuteStraight(bitset<32> block);
         bitset<32> exclusiveOr32(bitset<32> blockOne, bitset<32> blockTwo);
         bitset<48> exclusiveOr48(bitset<48> blockOne, bitset<48> blockTwo);
-        
+        KeyGen invertKeys(KeyGen iKeys);
+        string convertBack(string plaintext);
+
     private:
         KeyGen keys;
         bitset<32> leftBlock;

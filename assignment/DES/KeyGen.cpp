@@ -5,7 +5,7 @@
 ///
 KeyGen::KeyGen()
 {
-   
+   this->count = 0;
 }
 ///
 /// KeyGen::KeyGen

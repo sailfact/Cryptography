@@ -1,11 +1,11 @@
 #include "IO.h"
 
-string readFile()
+string readFile(const char *infile)
 {
     ifstream ifs;
     string text;
     char c;
-    ifs.open("infile.txt");
+    ifs.open(infile);
     if (ifs)
     {
         while (ifs.get(c))
@@ -15,16 +15,16 @@ string readFile()
     }
     else
     {
-        cerr << "Unable to open file" << '\n';
+        cerr << "Unable to open file" << infile << endl;
     }
     ifs.close();
     return text;
 }
 
-void writeFile(string text, string file)
+void writeFile(string text, const char *outfile)
 {
     ofstream ofs;
-    ofs.open("outfile.txt");
+    ofs.open(outfile);
     if (ofs.is_open())
     {
         ofs << text;
@@ -32,6 +32,6 @@ void writeFile(string text, string file)
     }
     else
     {
-        cout << "unable to open file" << file <<endl;
+        cerr << "unable to open file" << outfile << endl;
     }
 }
