@@ -1,9 +1,12 @@
+/// KeyGen.h
 #ifndef _KEYGEN_H
 #define _KEYGEN_H
 #include <iostream>
 #include <bitset>
 #include <vector>
-
+/// contains definition for the KeyGen class
+/// and tables used for key permutation
+///
 using namespace std;
 // Keeps track of shift amount for each round
 const static int SHIFT[16] = {1,1,2,2,2,2,2,2,1,2,2,2,2,2,2,1};
@@ -40,10 +43,11 @@ class KeyGen
         void generate(bitset<64> key);
         void addKey(bitset<48> key);
         bitset<48> getKey(int index);
+        KeyGen invertKeys();
     private:
         bitset<48> keys[16];
         bitset<28> left;
         bitset<28> right;
-        int count;  // keeps track of elements in
+        int count;  // keeps track of elements in keys
 };
 #endif

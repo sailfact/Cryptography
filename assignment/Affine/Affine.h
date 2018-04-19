@@ -1,3 +1,4 @@
+/// Affine.h
 #ifndef _AFFINE_H
 #define _AFFINE_H
 #include <iostream>
@@ -17,6 +18,7 @@ class Affine
         string encrypt(string plaintxt);
         string decrypt(string ciphertxt);
         int findInverse();
+        int gcd(int x, int y);
 
     private:
         int a;
