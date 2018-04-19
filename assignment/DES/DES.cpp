@@ -1,14 +1,9 @@
+/// DES.cpp
+///
 #include "DES.h"
 ///
-/// DES::DES
-///
-DES::DES(unsigned long long key)
-{
-    keys = KeyGen(key);
-}
-///
 /// DES::encrypt
-string DES::encrypt(string plaintext)
+string DES::encrypt(string plaintext, KeyGen keys)
 {
     string block = "";
     string ciphertext = "";
@@ -36,9 +31,8 @@ string DES::encrypt(string plaintext)
     return ciphertext;
 }
 
-string DES::decrypt(string ciphertext)
+string DES::decrypt(string ciphertext, KeyGen keys)
 {
-    KeyGen temp = invertKeys(keys);
     string block = "";
     string plaintext = "";
     int blockCount = 1;
@@ -74,6 +68,7 @@ bitset<64> DES::cipher(bitset<64> inBlock, KeyGen keys)
     split(inBlock);
     for (int round = 0; round < 16; round ++)
     {
+        cout << leftBlock << "\t" << rightBlock << endl;
         mixer(keys.getKey(round));
         if (round < 16)
         {
@@ -94,7 +89,7 @@ bitset<64> DES::initialPermute(bitset<64> inBlock)
 
     for (int i = 0; i < 64; i++)
     {
-        newBlock += strBlock.at(IP[i]-1);
+        newBlock += strBlock[IP[i]-1];
     }
     return bitset<64> (newBlock);
 }
@@ -108,7 +103,7 @@ bitset<64> DES::finalPermute(bitset<64> inBlock)
 
     for (int i = 0; i < 64; i++)
     {
-        newBlock += strKey.at(FP[i]-1);
+        newBlock += strKey[FP[i]-1];
     }
     return  bitset<64> (newBlock);
 }
@@ -132,12 +127,12 @@ bitset<64> DES::combine()
     string r = rightBlock.to_string();
     for (int i = 0; i < 32; i++)
     {
-        blockstr += l.at(i);
+        blockstr += l[i];
     }
 
     for (int i = 0; i < 32; i++)
     {
-        blockstr += r.at(i);
+        blockstr += r[i];
     }
 
     return bitset<64>(blockstr);
@@ -184,8 +179,8 @@ bitset<32> DES::substitute(bitset<48> block)
     temp += sub(strBlock.substr(30,6), 6).to_string();
     temp += sub(strBlock.substr(36,6), 7).to_string();
     temp += sub(strBlock.substr(42,6), 8).to_string();
-
-    return bitset<32>(strBlock);
+    // cout << "substitute" << "\t" << strBlock << "\n\t" << temp << endl;
+    return bitset<32>(temp);
 }
 ///
 /// DES::sub
@@ -199,28 +194,28 @@ bitset<4> DES::sub(string subBlock, int box)
     {
         case 1:
             value = S1[row][col];
-                break;
+            break;
         case 2:
             value = S2[row][col];
-                break;
+            break;
         case 3:
             value = S3[row][col];
-                break;
+            break;
         case 4:
             value = S4[row][col];
-                break;
+            break;
         case 5:
             value = S5[row][col];
-                break;
+            break;
         case 6:
             value = S6[row][col];
-                break;
+            break;
         case 7:
             value = S7[row][col];
-                break;
+            break;
         case 8:
             value = S8[row][col];
-                break;
+            break;
     }
     return bitset<4> (value);
 }
@@ -234,9 +229,9 @@ bitset<48> DES::permuteExpansion(bitset<32> block)
 
     for (int i = 0; i < 48; i++)
     {
-        newBlock += strBlock.at(EXPANSION[i]-1);
+        newBlock += strBlock[EXPANSION[i]-1];
     }
-
+    // cout << "D-BOX" << "\t" << block << "\n\t" << newBlock << endl;
     return bitset<48> (newBlock);
 }
 ///
@@ -249,9 +244,9 @@ bitset<32> DES::permuteStraight(bitset<32> block)
 
     for (int i = 0; i < 32; i++)
     {
-        newBlock += strBlock.at(STRAIGHT[i]-1);
+        newBlock += strBlock[STRAIGHT[i]-1];
     }
-
+    // cout << "STRAIGHT" << "\t" << block << "\n\t" << newBlock << endl;
     return bitset<32> (newBlock);
 }
 
@@ -263,18 +258,6 @@ bitset<32> DES::exclusiveOr32(bitset<32> blockOne, bitset<32> blockTwo)
 bitset<48> DES::exclusiveOr48(bitset<48> blockOne, bitset<48> blockTwo)
 {
     return blockOne ^= blockTwo;
-}
-
-KeyGen DES::invertKeys(KeyGen iKeys)
-{
-    KeyGen newKeys;
-
-    for (int i = 15; i >= 0; i --)
-    {
-        newKeys.addKey(iKeys.getKey(i));
-    }
-
-    return newKeys;
 }
 
 string DES::convertBack(string plaintext)

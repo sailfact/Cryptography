@@ -17,6 +17,7 @@ class Affine
         string encrypt(string plaintxt);
         string decrypt(string ciphertxt);
         int findInverse();
+        int gcd(int x, int y);
 
     private:
         int a;

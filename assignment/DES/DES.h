@@ -4,9 +4,12 @@
 #include "SBOX.h"
 #include <bitset>
 #include <sstream>
-
+///
+/// DES.h
+/// contains the class definition for des
+/// and tables used for permutation
 using namespace std;
-
+// initial permutation
 const static int IP[64] = {
     58,50,42,34,26,18,10, 2,
     60,52,44,36,28,20,12, 4,
@@ -17,7 +20,7 @@ const static int IP[64] = {
     61,53,45,37,29,21,13, 5,
     63,55,47,39,31,23,15, 7
 };
-
+// final permutation
 const static int FP[64] = {
     40, 8,48,16,56,24,64,32,
     39, 7,47,15,55,23,63,31,
@@ -28,7 +31,7 @@ const static int FP[64] = {
     34, 2,42,10,50,18,58,26,
     33, 1,41, 9,49,17,57,25
 };
-
+// expansion d-box
 const static int EXPANSION[48] = {
     32, 1, 2, 3, 4, 5,
      4, 5, 6, 7, 8, 9,
@@ -39,9 +42,9 @@ const static int EXPANSION[48] = {
     24,25,26,27,28,29,
     28,29,30,31,32, 1
 };
-
+// straight permutation
 const static int STRAIGHT[32] = {
-    16,07,20,21,29,12,28,17,
+    16, 7,20,21,29,12,28,17,
      1,15,23,26, 5,18,31,10,
      2, 8,24,14,32,27, 3, 9,
     19,13,30, 6,22,11, 4,25
@@ -50,9 +53,8 @@ const static int STRAIGHT[32] = {
 class DES
 {
     public:
-        DES(unsigned long long key);
-        string encrypt(string plaintext);
-        string decrypt(string ciphertext);
+        string encrypt(string plaintext,KeyGen keys);
+        string decrypt(string ciphertext, KeyGen keys);
         bitset<64> cipher(bitset<64> inBlock, KeyGen keys);
         bitset<64> initialPermute(bitset<64> inBlock);
         bitset<64> finalPermute(bitset<64> inBlock);
@@ -67,7 +69,6 @@ class DES
         bitset<32> permuteStraight(bitset<32> block);
         bitset<32> exclusiveOr32(bitset<32> blockOne, bitset<32> blockTwo);
         bitset<48> exclusiveOr48(bitset<48> blockOne, bitset<48> blockTwo);
-        KeyGen invertKeys(KeyGen iKeys);
         string convertBack(string plaintext);
 
     private:

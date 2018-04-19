@@ -1,8 +1,9 @@
-#include "KeyGen.h"
+/// KeyGen.cpp
 ///
+#include "KeyGen.h"
 /// KeyGen::KeyGen
 /// default constructor for KeyGen
-///
+/// used for assigning your own keys
 KeyGen::KeyGen()
 {
    this->count = 0;
@@ -11,7 +12,6 @@ KeyGen::KeyGen()
 /// KeyGen::KeyGen
 /// constructor for KeyGen
 /// calls starting function generate
-///
 KeyGen::KeyGen(bitset<64> key)
 {
     this->count = 0;
@@ -21,7 +21,6 @@ KeyGen::KeyGen(bitset<64> key)
 /// KeyGen::addKey
 /// adds a new key to the keys vector
 /// increments count
-///
 void KeyGen::addKey(bitset<48> newKey)
 {
     keys[count] = newKey;
@@ -31,7 +30,6 @@ void KeyGen::addKey(bitset<48> newKey)
 /// KeyGen::getKey
 /// returns the key corresponding to
 /// the index given
-///
 bitset<48> KeyGen::getKey(int index)
 {
     return keys[index];
@@ -40,7 +38,6 @@ bitset<48> KeyGen::getKey(int index)
 /// KeyGen::generate
 /// main function for the KeyGen class
 /// generates the 16 keys needed by des
-///
 void KeyGen::generate(bitset<64> key)
 {
     bitset<56> cipherKey = permute56(key);
@@ -57,8 +54,7 @@ void KeyGen::generate(bitset<64> key)
 /// KeyGen:: permute56
 /// permutes a given 64 bit key by removing
 /// the parity bits with DROPTABLE
-///table and returns a new 56 bit key
-///
+/// table and returns a new 56 bit key
 bitset<56> KeyGen::permute56(bitset<64> key)
 {
     string newKey = "";
@@ -75,7 +71,6 @@ bitset<56> KeyGen::permute56(bitset<64> key)
 /// permutes a given 56 bit key
 /// with DBOX table and returns a new
 /// 48 bit key
-///
 bitset<48> KeyGen::permute48(bitset<56> key)
 {
     string newKey = "";
@@ -92,7 +87,6 @@ bitset<48> KeyGen::permute48(bitset<56> key)
 /// KeyGen::leftShift
 /// gets the current shift value from the SHIFT table
 /// applys left shift to left and right keys
-///
 void KeyGen::leftShift(int round)
 {
     int shift = SHIFT[round];   // get the shift amount
@@ -104,19 +98,18 @@ void KeyGen::leftShift(int round)
 /// KeyGen::split
 /// takes a 56 bit key
 /// splits it into a left and right key
-///
 void KeyGen::split(bitset<56> key)
 {
     string keystr = key.to_string();
-
+    // assign half to left
     left = bitset<28>(keystr.substr(0, (keystr.length()/2)-1));
+    // assign half to right
     right = bitset<28>(keystr.substr(keystr.length()/2, keystr.length()-1));
 }
 ///
 /// KeyGen::combine
 /// joins the left and right key
 /// returns the key
-///
 bitset<56> KeyGen::combine()
 {
     string keystr = "";
@@ -133,4 +126,18 @@ bitset<56> KeyGen::combine()
     }
 
     return bitset<56>(keystr);
+}
+///
+/// KeyGen::invertKeys
+/// returns a new KeyGen object with inverted keys
+KeyGen KeyGen::invertKeys()
+{
+    KeyGen newKeys;
+
+    for (int i = 15; i >= 0; i --)
+    {
+        newKeys.addKey(getKey(i));
+    }
+
+    return newKeys;
 }

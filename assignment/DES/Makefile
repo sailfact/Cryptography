@@ -5,7 +5,7 @@
 CC=g++
 CFLAGS=
 OBJECTS=DES.o IO.o KeyGen.o Main.o
-EXEC=Des
+EXEC=des
 
 $(EXEC) : $(OBJECTS)
 	$(CC) $(OBJECTS) -o $(EXEC)

@@ -7,7 +7,7 @@
 Affine::Affine(int a, int b)
 {
     // check if a and b are valid yet
-    if ((a >= 0)&&(b <= 25))
+    if ((a >= 0)&&(b <= 25)&&(b >= 0)&&gcd(a, ALPHASIZE)==1)
     {
         this->a = a;
         this->b = b;
@@ -80,4 +80,12 @@ int Affine::findInverse()
     }
 
     return inv;
+}
+///
+/// Affine::gcd
+/// returns the greates common divisor
+/// for x and y
+int Affine::gcd(int x, int y)
+{
+    return y == 0 ? x : gcd(y, x % y);
 }

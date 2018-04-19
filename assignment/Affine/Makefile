@@ -5,7 +5,7 @@
 CC=g++
 CFLAGS=
 OBJECTS=Main.o Affine.o IO.o
-EXEC=Affine
+EXEC=affine
 
 $(EXEC) : $(OBJECTS)
 	$(CC) $(OBJECTS) -o $(EXEC)
