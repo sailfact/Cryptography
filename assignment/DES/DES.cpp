@@ -25,7 +25,7 @@ string DES::encrypt(string plaintext)
             ciphertext += convertBack(cipher(bitset<64>(block), keys).to_string());
             blockCount = 1;
         }
-        else if (i == plaintext.length() -1 && blockCount != 8) 
+        else if (i == plaintext.length() -1 && blockCount != 8)
         {
             // pad block with 0's if not 64 bits
             for (int j = 0; j < blockCount; j++)
