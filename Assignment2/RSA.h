@@ -2,6 +2,22 @@
 #define RAS_H
 #include <iostream>
 #include <cmath>
-int extendedGcd(int a, int b, int *x, int *y);
+
+#define THRESH 6
+
+class
+{
+public:
+    RSA(int, int);
+    int extendedGcd(int , int , int *, int *);
+    bool isPrime(int, int);
+    int convertToASCII(char);
+    int joinBlock(int, int);
+    char converToInt(int);
+private:
+    int eKey;
+    int nKey;
+    int dKey;
+}
 
 #endif
