@@ -1,5 +1,4 @@
 /// KeyGen.cpp
-///
 #include "KeyGen.h"
 /// KeyGen::KeyGen
 /// default constructor for KeyGen
@@ -90,7 +89,8 @@ bitset<48> KeyGen::permute48(bitset<56> key)
 void KeyGen::leftShift(int round)
 {
     int shift = SHIFT[round];   // get the shift amount
-
+    // shift left shift right by length -SHIFT
+    // or the difference
     left = left<<shift | left>>(left.size()-shift);
     right = right<<shift | right>>(right.size()-shift);
 }
@@ -108,7 +108,7 @@ void KeyGen::split(bitset<56> key)
 }
 ///
 /// KeyGen::combine
-/// joins the left and right key
+/// joins the left and right keys
 /// returns the key
 bitset<56> KeyGen::combine()
 {

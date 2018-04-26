@@ -1,3 +1,4 @@
+/// Main.cpp
 #include "Affine.h"
 #include "IO.h"
 #include <iostream>
@@ -12,17 +13,17 @@ int main(int argc, char const *argv[])
     try
     {
         Affine cipher(a,b);
-        string plaintext = readFile(infile);
-        string ciphertext = cipher.encrypt(plaintext);
-        writeFile(ciphertext, "encrypt.txt");
+        string plaintext = readFile(infile);   // read plaintext from infile
+        string ciphertext = cipher.encrypt(plaintext); // encrypts plaintext
+        writeFile(ciphertext, "encrypt.txt"); // write ciphertext to file
 
-        ciphertext = readFile("encrypt.txt");
-        plaintext = cipher.decrypt(ciphertext);
-        writeFile(plaintext, "decrypt.txt");
+        ciphertext = readFile("encrypt.txt"); // read ciphertext from file
+        plaintext = cipher.decrypt(ciphertext); // decrypts ciphertext
+        writeFile(plaintext, "decrypt.txt"); // write plaintext to file
     }
     catch(const char* msg)
     {
-        cerr << msg << endl;
+        cerr << msg << endl;    // keys are invalid
     }
 
     return 0;

@@ -1,9 +1,14 @@
+/// Main.cpp
 #include "DES.h"
 #include "IO.h"
 
 int main(int argc, const char **argv)
 {
-    /*DES des(9455435345);
+    string str = "0001001100110100010101110111100110011011101111001101111111110001";
+    KeyGen keys;
+    keys = KeyGen(bitset<64>(str));
+    KeyGen ikeys = keys.invertKeys();
+    DES des(keys, ikeys);
     const char* infile = argv[1];
     string plaintext = readFile(infile);    // get text from file
     string ciphertext = des.encrypt(plaintext); // encrypt the text
@@ -15,17 +20,6 @@ int main(int argc, const char **argv)
     ciphertext = readFile("encrypt.txt");   // read text back
     plaintext = des.decrypt(ciphertext);    // decrypt the text
     writeFile(plaintext, "decrypt.txt");    // write the decrypted text to a file
-    */
 
-    bitset<64> pt(121212121212);
-    KeyGen keys(892765478632);
-    DES des;
-    KeyGen ikeys = keys.invertKeys();
-
-    bitset<64> ec = des.cipher(pt, keys);
-    bitset<64> dc = des.cipher(ec, ikeys);
-    cout << pt << endl;
-    cout << ec << endl;
-    cout << dc << endl;
     return 0;
 }

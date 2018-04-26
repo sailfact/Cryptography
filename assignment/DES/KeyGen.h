@@ -1,10 +1,9 @@
+/// KeyGen.h
 #ifndef _KEYGEN_H
 #define _KEYGEN_H
 #include <iostream>
 #include <bitset>
 #include <vector>
-///
-/// KeyGen.h
 /// contains definition for the KeyGen class
 /// and tables used for key permutation
 ///

@@ -1,11 +1,10 @@
+/// DES.h
 #ifndef _DES_H
 #define _DES_H
 #include "KeyGen.h"
 #include "SBOX.h"
 #include <bitset>
 #include <sstream>
-///
-/// DES.h
 /// contains the class definition for des
 /// and tables used for permutation
 using namespace std;
@@ -53,16 +52,17 @@ const static int STRAIGHT[32] = {
 class DES
 {
     public:
-        string encrypt(string plaintext,KeyGen keys);
-        string decrypt(string ciphertext, KeyGen keys);
+        DES(KeyGen k1, KeyGen k2);
+        string encrypt(string plaintext);
+        string decrypt(string ciphertext);
         bitset<64> cipher(bitset<64> inBlock, KeyGen keys);
         bitset<64> initialPermute(bitset<64> inBlock);
         bitset<64> finalPermute(bitset<64> inBlock);
         void split(bitset<64> block);
         bitset<64> combine();
-        void mixer(bitset<48> key);
+        void fk(bitset<48> key);
         void swapper();
-        bitset<32> function(bitset<32> block, bitset<48> key);
+        bitset<32> F(bitset<32> block, bitset<48> key);
         bitset<32> substitute(bitset<48> block);
         bitset<4> sub(string subBlock, int box);
         bitset<48> permuteExpansion(bitset<32> block);
@@ -73,6 +73,7 @@ class DES
 
     private:
         KeyGen keys;
+        KeyGen invKeys;
         bitset<32> leftBlock;
         bitset<32> rightBlock;
 };
