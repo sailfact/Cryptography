@@ -1,12 +1,16 @@
 #include "RSA.h"
 
-RSA::RSA(int e, int n)
+RSA::RSA(int p, int q)
 {
-
-    if ((e < n)&&(isPrime(e, THRESH) && isPrime(n, THRESH)))
+    if ((p >= 10000)&&(p <= 100000)&&(q >= 10000)&&(q <= 100000)
+    &&(isPrime(p, THRESH) && isPrime(q, THRESH)))
     {
-        this->eKey = e;
-        this->nKey = n;
+        this->p = p;
+        this->q = q;
+        this->n = p * q;
+        this->eulerTotient = (p-1) * (q-1);
+        this->e = findE(n, eulerTotient);
+        this->d = findD(p,q,e);
     }
     else
         throw "ERROR : invalid keys\n";
@@ -22,7 +26,7 @@ int RSA::extendedGcd(int a, int b, int *x, int *y)
     }
 
     int tempX, tempY;
-    int gcd = extendedGcd(b%a, &tempX, &tempY);
+    int gcd = extendedGcd(b%a, a, &tempX, &tempY);
 
     *x = tempY - (b/a) * tempX;
     *y = tempX;
@@ -52,17 +56,78 @@ bool RSA::isPrime(int p, int t)
     return true;
 }
 
-int RSA::convertToASCII(char c)
-{
-    return (int)c;
-}
-
-int  RSA::joinBlock(int a, int b)
+int RSA::joinBlock(int a, int b)
 {
     return (a * 1000) + b;
 }
 
-char RSA::converToInt(int i)
+int RSA::splitBlock(int block, int *a, int *b)
 {
-    return (char)i;
+    *a = block / 1000;
+    *b = block % 1000;
+}
+
+int RSA::findE(int a, int n)
+{
+    int x, y;
+    srand((unsigned)time(NULL));
+
+    int temp = (rand()%n-1)+1;
+    while (extendedGcd(temp, a, &x, &y) != 1)
+        --temp;
+
+    return temp;
+}
+
+int RSA::findD(int a,int b, int e)
+{
+    int x, y;
+    extendedGcd(a,b,&x,&y);
+
+    return (a * x) + (b * y);
+}
+
+std::string RSA::encrypt(std::string plaintext)
+{
+    std::vector<int> vec = getVec(plaintext);
+
+    for(std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it)
+    {
+
+    }
+}
+
+std::string RSA::decrypt(std::string ciphertext)
+{
+    std::vector<int> vec = getVec(ciphertext);
+
+
+}
+
+std::vector<int> RSA::getVec(std::string text)
+{
+    std::vector<int> v;
+    std::string temp = "";
+    int count = 0;
+    char a,b;
+
+    for (int i = 0; i < text.length(); ++i)
+    {
+        temp += text[i];
+        if (temp.length() == 2)
+        {
+            a = temp[0];
+            b = temp[1];
+            v.push_back(joinBlock((int)a, (int)b));
+            temp = "";
+        }
+        else if (i == text.length()-1)
+        {
+            // if the string is odd add padding to the end
+            a = temp[0];
+            v.push_back(joinBlock((int)a, 0));
+        }
+    }
+
+    return v;
 }

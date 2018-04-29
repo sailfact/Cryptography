@@ -2,7 +2,7 @@
 
 std::string readFile(const char *infile)
 {
-    ifstream ifs;
+    std::ifstream ifs;
     std::string text;
     char c;
     ifs.open(infile);
@@ -19,7 +19,7 @@ std::string readFile(const char *infile)
 
 void writeFile(std::string text, const char *outfile)
 {
-    ofstream ofs;
+    std::ofstream ofs;
     ofs.open(outfile);
     if (ofs.is_open())
     {
