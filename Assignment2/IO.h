@@ -4,4 +4,4 @@
 #include <string>
 
 std::string readFile(const char *);
-void writeFile(std::string text, const char *);
+void writeFile(std::string, const char *);

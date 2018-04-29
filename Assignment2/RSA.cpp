@@ -58,6 +58,7 @@ bool RSA::isPrime(int p, int t)
 
 int RSA::joinBlock(int a, int b)
 {
+    std::cout << a << " : " << b << " = " << (a*1000)+b <<'\n';
     return (a * 1000) + b;
 }
 
@@ -90,18 +91,47 @@ int RSA::findD(int a,int b, int e)
 std::string RSA::encrypt(std::string plaintext)
 {
     std::vector<int> vec = getVec(plaintext);
+    std::vector<int> encrypt;
+    std::string ciphertext = "";
+    int c, a, b;
 
     for(std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it)
     {
-
+        c = (int)(pow(*it, e)) % n;
+        std::cout << *it<<"^"<<e<<"mod"<<n<<"="<<c<<'\n';
+        encrypt.push_back(c);
     }
+
+    for(std::vector<int>::iterator it = encrypt.begin(); it != encrypt.end(); ++it)
+    {
+        splitBlock(*it, &a, &b);
+        ciphertext += (char)a + (char)b;
+    }
+
+    return ciphertext;
 }
 
 std::string RSA::decrypt(std::string ciphertext)
 {
     std::vector<int> vec = getVec(ciphertext);
+    std::vector<int> decrypt;
+    std::string plaintext = "";
+    int m, a, b;
 
+    for(std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it)
+    {
+        m = (int)(pow(*it, d)) % n;
+        std::cout << *it<<"^"<<d<<"mod"<<n<<"="<<m<< '\n';
+        decrypt.push_back(m);
+    }
 
+    for(std::vector<int>::iterator it = decrypt.begin(); it != decrypt.end(); ++it)
+    {
+        splitBlock(*it, &a, &b);
+        plaintext += (char)a + (char)b;
+    }
+
+    return plaintext;
 }
 
 std::vector<int> RSA::getVec(std::string text)

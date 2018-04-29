@@ -15,10 +15,10 @@ public:
     int joinBlock(int, int);
     int splitBlock(int, int *, int *);
     int findE(int, int);
-    int findD(int a,int b, int e);
+    int findD(int ,int, int );
     std::string encrypt(std::string);
     std::string decrypt(std::string);
-    std::vector<int> getVec(std::string text);
+    std::vector<int> getVec(std::string);
 private:
     int p;
     int q;

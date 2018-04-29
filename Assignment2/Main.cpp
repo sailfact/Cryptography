@@ -19,7 +19,18 @@ int main(int argc, char const *argv[])
             q = 50021;
         }
 
-        std::string plaintext = readFile(infile);
+        std::string plaintext = "Hello World";
+
+        RSA rsa(p,q);
+        std::string ciphertext = rsa.encrypt(plaintext);
+        writeFile(ciphertext, "encrypt.txt");
+
+        plaintext = "";
+        ciphertext = "";
+
+        ciphertext = readFile("encrypt.txt");
+        plaintext = rsa.decrypt(ciphertext);
+        writeFile(plaintext, "decrypt.txt");
     }
     else
         std::cerr << "ERROR : Not enough arguments" << std::endl;
