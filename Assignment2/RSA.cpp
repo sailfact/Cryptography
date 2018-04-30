@@ -1,5 +1,15 @@
 #include "RSA.h"
 
+RSA::RSA()
+{
+    this->p = 17;
+    this->q = 11;
+    this->n = p * q;
+    this->eulerTotient = (p - 1) * (q - 1);
+    this->e = 7;
+    this->d = 23;
+}
+
 RSA::RSA(int p, int q)
 {
     if ((p >= 10000)&&(p <= 100000)&&(q >= 10000)&&(q <= 100000)
@@ -8,7 +18,7 @@ RSA::RSA(int p, int q)
         this->p = p;
         this->q = q;
         this->n = p * q;
-        this->eulerTotient = (p-1) * (q-1);
+        this->eulerTotient = (p - 1) * (q - 1);
         this->e = findE(n, eulerTotient);
         this->d = findD(p,q,e);
     }
@@ -58,11 +68,10 @@ bool RSA::isPrime(int p, int t)
 
 int RSA::joinBlock(int a, int b)
 {
-    std::cout << a << " : " << b << " = " << (a*1000)+b <<'\n';
     return (a * 1000) + b;
 }
 
-int RSA::splitBlock(int block, int *a, int *b)
+int RSA::splitBlock(long block, long *a, long *b)
 {
     *a = block / 1000;
     *b = block % 1000;
@@ -93,12 +102,12 @@ std::string RSA::encrypt(std::string plaintext)
     std::vector<int> vec = getVec(plaintext);
     std::vector<int> encrypt;
     std::string ciphertext = "";
-    int c, a, b;
+    long c, a, b;
 
     for(std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it)
     {
-        c = (int)(pow(*it, e)) % n;
-        std::cout << *it<<"^"<<e<<"mod"<<n<<"="<<c<<'\n';
+        c = calcExp(*it, e, n);
+        std::cout << *it<<"^"<<e<<" mod "<<n<<" = "<<c<<'\n';
         encrypt.push_back(c);
     }
 
@@ -106,6 +115,7 @@ std::string RSA::encrypt(std::string plaintext)
     {
         splitBlock(*it, &a, &b);
         ciphertext += (char)a + (char)b;
+        ciphertext += (char)*it;
     }
 
     return ciphertext;
@@ -116,12 +126,13 @@ std::string RSA::decrypt(std::string ciphertext)
     std::vector<int> vec = getVec(ciphertext);
     std::vector<int> decrypt;
     std::string plaintext = "";
-    int m, a, b;
+    long m, a, b;
 
     for(std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it)
     {
-        m = (int)(pow(*it, d)) % n;
-        std::cout << *it<<"^"<<d<<"mod"<<n<<"="<<m<< '\n';
+
+        m = calcExp(*it, d, n) % n;
+        std::cout << *it<<"^"<<d<<" mod "<<n<<"= "<<m<<'\n';
         decrypt.push_back(m);
     }
 
@@ -160,4 +171,22 @@ std::vector<int> RSA::getVec(std::string text)
     }
 
     return v;
+}
+
+long RSA::calcExp(long a, long b, long n)
+{
+    long ret = 1;
+
+    a = a % n;
+
+    while (b > 0)
+    {
+        if (b & 1)
+            ret = (ret * a) % n;
+
+        b = b>>1;
+        a = (a * a) % n;
+    }
+
+    return ret;
 }
