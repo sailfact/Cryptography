@@ -5,7 +5,7 @@ RSA::RSA()
     this->p = 17;
     this->q = 11;
     this->n = p * q;
-    this->eulerTotient = (p - 1) * (q - 1);
+    this->phi = (p - 1) * (q - 1);
     this->e = 7;
     this->d = 23;
 }
@@ -18,10 +18,16 @@ RSA::RSA(int p, int q)
         this->p = p;
         this->q = q;
         this->n = p * q;
-        this->eulerTotient = (p - 1) * (q - 1);
-        this->e = findE(n, eulerTotient);
-        this->d = findD(p,q,e);
-    }
+        this->phi = (p - 1) * (q - 1);
+        this->e = 65537;
+        this->d = findD(p,q);
+        std::cout << "p = " << p << '\n'
+                  << "q = " << q << '\n'
+                  << "n = " << n << '\n'
+                  << "phi = " << phi << '\n'
+                  << "e = " << e << '\n'
+                  << "d = " << d << '\n';
+      }
     else
         throw "ERROR : invalid keys\n";
 }
@@ -56,9 +62,9 @@ bool RSA::isPrime(int p, int t)
 
     for (int i = 0; i < t; i ++)
     {
-        a = (rand()%p-1)+1;
-        e = (p-1)/2;
-        r = ((int)pow(a,e)) % p;
+        a = (rand() % p - 1) + 1;
+        e = (p - 1) / 2;
+        r = ((int)pow(a, e)) % p;
         if (r % p == p - 1)
              return false;
     }
@@ -71,35 +77,46 @@ int RSA::joinBlock(int a, int b)
     return (a * 1000) + b;
 }
 
-int RSA::splitBlock(long block, long *a, long *b)
+void RSA::splitBlock(long block, long *a, long *b)
 {
+    std::cout << block << '\n';
     *a = block / 1000;
+    std::cout << *a << '\n';
     *b = block % 1000;
+    std::cout << *b << '\n';
 }
 
-int RSA::findE(int a, int n)
+/// RSA::findE
+/// finds a long integer such that 
+/// 1 < e < phi & gcd(e, phi) = 1
+long RSA::findE(long a)
 {
     int x, y;
     srand((unsigned)time(NULL));
 
-    int temp = (rand()%n-1)+1;
-    while (extendedGcd(temp, a, &x, &y) != 1)
+    int temp = (rand()%a-1)+1;
+    while (isPrime(temp, THRESH)&&extendedGcd(temp, a, &x, &y) != 1)
         --temp;
 
     return temp;
 }
 
-int RSA::findD(int a,int b, int e)
+long RSA::findD(int a,int b)
 {
     int x, y;
     extendedGcd(a,b,&x,&y);
-
-    return (a * x) + (b * y);
+    
+    if((a * x) + (b * y) == 1)
+        return x;
+    else 
+        throw "error getting d key";
 }
 
 std::string RSA::encrypt(std::string plaintext)
 {
     std::vector<int> vec = getVec(plaintext);
+    // std::vector<int> vec;
+    // vec.push_back(plaintext[0]);
     std::vector<int> encrypt;
     std::string ciphertext = "";
     long c, a, b;
@@ -113,9 +130,8 @@ std::string RSA::encrypt(std::string plaintext)
 
     for(std::vector<int>::iterator it = encrypt.begin(); it != encrypt.end(); ++it)
     {
-        splitBlock(*it, &a, &b);
-        ciphertext += (char)a + (char)b;
-        ciphertext += (char)*it;
+        ciphertext += *it;
+        // ciphertext += (char)*it;
     }
 
     return ciphertext;
@@ -124,7 +140,9 @@ std::string RSA::encrypt(std::string plaintext)
 std::string RSA::decrypt(std::string ciphertext)
 {
     std::vector<int> vec = getVec(ciphertext);
-    std::vector<int> decrypt;
+    // std::vector<int> vec;
+    // vec.push_back(ciphertext[0]);
+    std::vector<long> decrypt;
     std::string plaintext = "";
     long m, a, b;
 
@@ -136,10 +154,11 @@ std::string RSA::decrypt(std::string ciphertext)
         decrypt.push_back(m);
     }
 
-    for(std::vector<int>::iterator it = decrypt.begin(); it != decrypt.end(); ++it)
+    for(std::vector<long>::iterator it = decrypt.begin(); it != decrypt.end(); ++it)
     {
         splitBlock(*it, &a, &b);
         plaintext += (char)a + (char)b;
+        // plaintext += (char)*it;
     }
 
     return plaintext;

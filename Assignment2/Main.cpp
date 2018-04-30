@@ -21,7 +21,7 @@ int main(int argc, char const *argv[])
 
         std::string plaintext = "XX";
 
-        RSA rsa(p, q);
+        RSA rsa(p,q);
         std::string ciphertext = rsa.encrypt(plaintext);
         writeFile(ciphertext, "encrypt.txt");
 

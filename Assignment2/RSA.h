@@ -14,18 +14,18 @@ public:
     int extendedGcd(int , int , int *, int *);
     bool isPrime(int, int);
     int joinBlock(int, int);
-    int splitBlock(long, long *, long *);
-    int findE(int, int);
-    int findD(int ,int, int );
+    void splitBlock(long, long *, long *);
+    long findE(long);
+    long findD(int ,int);
     std::string encrypt(std::string);
     std::string decrypt(std::string);
     std::vector<int> getVec(std::string);
     long calcExp(long, long, long);
 private:
-    int p;
-    int q;
-    int e;
-    int n;
-    int eulerTotient;
-    int d;
+    long p;
+    long q;
+    long e;
+    long n;
+    long phi;
+    long d;
 };
