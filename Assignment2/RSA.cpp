@@ -21,12 +21,12 @@ RSA::RSA(int p, int q)
         this->phi = (p - 1) * (q - 1);
         this->e = 65537;
         this->d = findD(p,q);
-        std::cout << "p = " << p << '\n'
-                  << "q = " << q << '\n'
-                  << "n = " << n << '\n'
-                  << "phi = " << phi << '\n'
-                  << "e = " << e << '\n'
-                  << "d = " << d << '\n';
+        // std::cout << "p = " << p << '\n'
+        //           << "q = " << q << '\n'
+        //           << "n = " << n << '\n'
+        //           << "phi = " << phi << '\n'
+        //           << "e = " << e << '\n'
+        //           << "d = " << d << '\n';
       }
     else
         throw "ERROR : invalid keys\n";
