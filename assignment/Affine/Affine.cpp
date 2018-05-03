@@ -63,7 +63,7 @@ string Affine::decrypt(string ciphertxt)
             else
                 plaintxt += (char)(int(aInv * (ALPHASIZE + ciphertxt[i] - LOWER - b) % ALPHASIZE + LOWER));
         }
-        else    // if it's net a letter add it anyway
+        else    // if it's not a letter add it anyway
         {
             plaintxt += ciphertxt[i];
         }

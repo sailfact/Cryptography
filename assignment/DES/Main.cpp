@@ -4,9 +4,13 @@
 
 int main(int argc, const char **argv)
 {
-    string str = "0001001100110100010101110111100110011011101111001101111111110001";
+    string str = "0001001100110100-s--010101110111100110011011101111001101111111110001";
     KeyGen keys;
     keys = KeyGen(bitset<64>(str));
+    for (int i  = 0; i < 16; i++)
+    {
+        cout << keys.getKey(i) << endl;  
+    }
     KeyGen ikeys = keys.invertKeys();
     DES des(keys, ikeys);
     const char* infile = argv[1];
