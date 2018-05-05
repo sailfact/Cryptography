@@ -19,7 +19,7 @@ RSA::RSA(int p, int q)
         this->q = q;
         this->n = p * q;
         this->phi = (p - 1) * (q - 1);
-        this->e = 65537;
+        this->e = findE(phi);
         this->d = findD(p,q);
         // std::cout << "p = " << p << '\n'
         //           << "q = " << q << '\n'
@@ -42,9 +42,9 @@ int RSA::extendedGcd(int a, int b, int *x, int *y)
     }
 
     int tempX, tempY;
-    int gcd = extendedGcd(b%a, a, &tempX, &tempY);
+    int gcd = extendedGcd(b % a, a, &tempX, &tempY);
 
-    *x = tempY - (b/a) * tempX;
+    *x = tempY - (b / a) * tempX;
     *y = tempX;
 
     return gcd;
@@ -95,7 +95,7 @@ long RSA::findE(long a)
     srand((unsigned)time(NULL));
 
     int temp = (rand()%a-1)+1;
-    while (isPrime(temp, THRESH)&&extendedGcd(temp, a, &x, &y) != 1)
+    while (extendedGcd(temp, a, &x, &y) != 1)
         --temp;
 
     return temp;

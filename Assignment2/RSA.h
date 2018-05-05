@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <vector>
 
-#define THRESH 6
+#define THRESH 20
 
 class RSA
 {

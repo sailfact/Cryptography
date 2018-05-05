@@ -23,14 +23,15 @@ int main(int argc, char const *argv[])
 
         RSA rsa(p,q);
         std::string ciphertext = rsa.encrypt(plaintext);
-        writeFile(ciphertext, "encrypt.txt");
+        plaintext = rsa.encrypt(ciphertext);
+        // writeFile(ciphertext, "encrypt.txt");
 
-        plaintext = "";
-        ciphertext = "";
+        // plaintext = "";
+        // ciphertext = "";
 
-        ciphertext = readFile("encrypt.txt");
-        plaintext = rsa.decrypt(ciphertext);
-        writeFile(plaintext, "decrypt.txt");
+        // ciphertext = readFile("encrypt.txt");
+        // plaintext = rsa.decrypt(ciphertext);
+        // writeFile(plaintext, "decrypt.txt");
     }
     else
         std::cerr << "ERROR : Not enough arguments" << std::endl;
