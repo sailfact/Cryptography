@@ -20,13 +20,13 @@ RSA::RSA(int p, int q)
         this->n = p * q;
         this->phi = (p - 1) * (q - 1);
         this->e = findE(phi);
-        this->d = findD(p,q);
-        // std::cout << "p = " << p << '\n'
-        //           << "q = " << q << '\n'
-        //           << "n = " << n << '\n'
-        //           << "phi = " << phi << '\n'
-        //           << "e = " << e << '\n'
-        //           << "d = " << d << '\n';
+        this->d = findD(e, phi);
+        std::cout << "p   = " << p << '\n'
+                  << "q   = " << q << '\n'
+                  << "n   = " << n << '\n'
+                  << "phi = " << phi << '\n'
+                  << "e   = " << e << '\n'
+                  << "d   = " << d << '\n';
       }
     else
         throw "ERROR : invalid keys\n";
@@ -34,6 +34,7 @@ RSA::RSA(int p, int q)
 
 int RSA::extendedGcd(int a, int b, int *x, int *y)
 {
+    int tempX, tempY, gcd;
     if (a == 0)
     {
         *x = 0;
@@ -41,8 +42,7 @@ int RSA::extendedGcd(int a, int b, int *x, int *y)
         return b;
     }
 
-    int tempX, tempY;
-    int gcd = extendedGcd(b % a, a, &tempX, &tempY);
+    gcd = extendedGcd(b % a, a, &tempX, &tempY);
 
     *x = tempY - (b / a) * tempX;
     *y = tempX;
@@ -77,39 +77,44 @@ int RSA::joinBlock(int a, int b)
     return (a * 1000) + b;
 }
 
-void RSA::splitBlock(long block, long *a, long *b)
+void RSA::splitBlock(u64 block, u64 *a, u64 *b)
 {
-    std::cout << block << '\n';
     *a = block / 1000;
-    std::cout << *a << '\n';
     *b = block % 1000;
-    std::cout << *b << '\n';
 }
 
 /// RSA::findE
-/// finds a long integer such that 
+/// finds a u64 integer such that 
 /// 1 < e < phi & gcd(e, phi) = 1
-long RSA::findE(long a)
+u64 RSA::findE(u64 a)
 {
     int x, y;
     srand((unsigned)time(NULL));
 
-    int temp = (rand()%a-1)+1;
+    int temp = (rand()%a/2)+1;
     while (extendedGcd(temp, a, &x, &y) != 1)
         --temp;
 
     return temp;
 }
 
-long RSA::findD(int a,int b)
+u64 RSA::findD(int x , int t)
 {
-    int x, y;
-    extendedGcd(a,b,&x,&y);
+    // int x, y;
+    // extendedGcd(a,b,&x,&y);
     
-    if((a * x) + (b * y) == 1)
-        return x;
-    else 
-        throw "error getting d key";
+    // if((a * x) + (b * y) == 1)
+    //     return x;
+    // else 
+    //     throw "error getting d key";
+
+    u64 k = 1;
+    while (1)
+    {
+        k = k + t;
+        if (k % x == 0)
+            return (k / x);
+    }
 }
 
 std::string RSA::encrypt(std::string plaintext)
@@ -119,19 +124,19 @@ std::string RSA::encrypt(std::string plaintext)
     // vec.push_back(plaintext[0]);
     std::vector<int> encrypt;
     std::string ciphertext = "";
-    long c, a, b;
+    u64 c, a, b;
 
     for(std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it)
     {
         c = calcExp(*it, e, n);
-        std::cout << *it<<"^"<<e<<" mod "<<n<<" = "<<c<<'\n';
+        //std::cout << *it<<"^"<<e<<" mod "<<n<<" = "<<c<<'\n';
         encrypt.push_back(c);
     }
 
     for(std::vector<int>::iterator it = encrypt.begin(); it != encrypt.end(); ++it)
     {
-        ciphertext += *it;
-        // ciphertext += (char)*it;
+        //ciphertext += *it;
+        ciphertext += (char)*it;
     }
 
     return ciphertext;
@@ -142,19 +147,19 @@ std::string RSA::decrypt(std::string ciphertext)
     std::vector<int> vec = getVec(ciphertext);
     // std::vector<int> vec;
     // vec.push_back(ciphertext[0]);
-    std::vector<long> decrypt;
+    std::vector<u64> decrypt;
     std::string plaintext = "";
-    long m, a, b;
+    u64 m, a, b;
 
     for(std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it)
     {
 
         m = calcExp(*it, d, n) % n;
-        std::cout << *it<<"^"<<d<<" mod "<<n<<"= "<<m<<'\n';
+        //std::cout << *it<<"^"<<d<<" mod "<<n<<"= "<<m<<'\n';
         decrypt.push_back(m);
     }
 
-    for(std::vector<long>::iterator it = decrypt.begin(); it != decrypt.end(); ++it)
+    for(std::vector<u64>::iterator it = decrypt.begin(); it != decrypt.end(); ++it)
     {
         splitBlock(*it, &a, &b);
         plaintext += (char)a + (char)b;
@@ -192,9 +197,9 @@ std::vector<int> RSA::getVec(std::string text)
     return v;
 }
 
-long RSA::calcExp(long a, long b, long n)
+u64 RSA::calcExp(u64 a, u64 b, u64 n)
 {
-    long ret = 1;
+    u64 ret = 1;
 
     a = a % n;
 

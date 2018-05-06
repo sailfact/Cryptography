@@ -32,15 +32,25 @@ long findE(long a)
     return temp;
 }
 
-long findD(int a,int b)
+// long findD(int a,int b)
+// {
+//     int x, y;
+//     extendedGcd(a,b,&x,&y);
+//     std::cout << a << ' ' << b << ' ' << x << ' ' << y << std::endl;
+//     if((a * x) + (b * y) == 1)
+//         return x;
+//     else 
+//         throw "error getting d key";
+// }
+long findD(long int x, long int t)
 {
-    int x, y;
-    extendedGcd(a,b,&x,&y);
-    std::cout << a << ' ' << b << ' ' << x << ' ' << y << std::endl;
-    if((a * x) + (b * y) == 1)
-        return x;
-    else 
-        throw "error getting d key";
+    long int k = 1;
+    while (1)
+    {
+        k = k + t;
+        if (k % x == 0)
+            return (k / x);
+    }
 }
 
 long calcExp(long a, long b, long n)
@@ -81,15 +91,21 @@ long decrypt(long ct, long d, long n)
     return m;
 }
 
+int joinBlock(int a, int b)
+{
+    return (a * 1000) + b;
+}
+
 int main(void)
 {
-    int p = 17;
-    int q = 11;
-    int pt = 88;
+    std::string msg = "as";
+    int p = 20011;
+    int q = 50021;
+    int pt = joinBlock(msg[0], msg[1]);
     int n = p * q;
     int phi = (p - 1) * (q - 1);
-    int d = 23; //findD(p, q);
-    int e = 7;  //findE(phi);
+    int e = findE(phi);
+    int d = findD(e, phi);
     int ct = encrypt(pt, e, n);
     pt = decrypt(ct, d, n);
 

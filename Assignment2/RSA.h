@@ -5,6 +5,7 @@
 #include <vector>
 
 #define THRESH 20
+typedef unsigned long long int u64;
 
 class RSA
 {
@@ -14,18 +15,18 @@ public:
     int extendedGcd(int , int , int *, int *);
     bool isPrime(int, int);
     int joinBlock(int, int);
-    void splitBlock(long, long *, long *);
-    long findE(long);
-    long findD(int ,int);
+    void splitBlock(u64, u64 *, u64 *);
+    u64 findE(u64);
+    u64 findD(int ,int);
     std::string encrypt(std::string);
     std::string decrypt(std::string);
     std::vector<int> getVec(std::string);
-    long calcExp(long, long, long);
+    u64 calcExp(u64, u64, u64);
 private:
-    long p;
-    long q;
-    long e;
-    long n;
-    long phi;
-    long d;
+    u64 p;
+    u64 q;
+    u64 e;
+    u64 n;
+    u64 phi;
+    u64 d;
 };
