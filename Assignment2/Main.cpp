@@ -5,6 +5,7 @@
 int main(int argc, char const *argv[])
 {
     int p, q;
+    int option;
     if (argc > 1)
     {
         const char * infile = argv[1];
@@ -19,19 +20,30 @@ int main(int argc, char const *argv[])
             q = 50021;
         }
 
-        std::string plaintext = "HelloWorld";//readFile(infile);
-
         RSA rsa(p,q);
-        std::string ciphertext = rsa.encrypt(plaintext);
-        plaintext = rsa.encrypt(ciphertext);
-        writeFile(ciphertext, "encrypt.txt");
+        std::string plaintext = "";
+        std::string ciphertext = "";
+        while (1)
+        {
+            std::cout << "Enter [1] to encrypt\nEnter [2] to decrypt\nEnter [3] to exit" << std::endl;
+            std::cin >> option;
+            switch(option)
+            {
+                case 1:
+                    plaintext = readFile(infile);
+                    ciphertext = rsa.encrypt(plaintext);
+                    writeFile(ciphertext,"encrypt.txt");                    
+                    break;
+                case 2:
+                    ciphertext = readFile("encrypt.txt");
+                    plaintext = rsa.decrypt(ciphertext);
+                    writeFile(plaintext, "decrypt.txt");
+                    break;
+                case 3:
+                    exit(0);
 
-        plaintext = "";
-        ciphertext = "";
-
-        ciphertext = readFile("encrypt.txt");
-        //plaintext = rsa.decrypt(ciphertext);
-        //writeFile(plaintext, "decrypt.txt");
+            }
+        }
     }
     else
         std::cerr << "ERROR : Not enough arguments" << std::endl;

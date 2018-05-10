@@ -2,7 +2,9 @@
 #include <ctime>
 #include <cstdlib>
 
-int extendedGcd(int a, int b, int *x, int *y)
+typedef unsigned long long int u64;
+
+u64 extendedGcd(u64 a, u64 b, u64 *x, u64 *y)
 {
     if (a == 0)
     {
@@ -11,8 +13,8 @@ int extendedGcd(int a, int b, int *x, int *y)
         return b;
     }
 
-    int tempX, tempY;
-    int gcd = extendedGcd(b % a, a, &tempX, &tempY);
+    u64 tempX, tempY;
+    u64 gcd = extendedGcd(b % a, a, &tempX, &tempY);
 
     *x = tempY - (b / a) * tempX;
     *y = tempX;
@@ -20,21 +22,21 @@ int extendedGcd(int a, int b, int *x, int *y)
     return gcd;
 }
 
-long findE(long a)
+u64 findE(long a)
 {
-    int x, y;
+    u64 x, y;
     srand((unsigned)time(NULL));
 
-    int temp = (rand()%a-1)+1;
+    u64 temp = (rand()%a-1)+1;
     while (extendedGcd(temp, a, &x, &y) != 1)
         --temp;
 
     return temp;
 }
 
-// long findD(int a,int b)
+// long findD(long a,long b)
 // {
-//     int x, y;
+//     long x, y;
 //     extendedGcd(a,b,&x,&y);
 //     std::cout << a << ' ' << b << ' ' << x << ' ' << y << std::endl;
 //     if((a * x) + (b * y) == 1)
@@ -42,9 +44,9 @@ long findE(long a)
 //     else 
 //         throw "error getting d key";
 // }
-long findD(long int x, long int t)
+u64 findD(u64 x, u64 t)
 {
-    long int k = 1;
+    u64 k = 1;
     while (1)
     {
         k = k + t;
@@ -53,9 +55,9 @@ long findD(long int x, long int t)
     }
 }
 
-long calcExp(long a, long b, long n)
+u64 calcExp(long a, long b, long n)
 {
-    long ret = 1;
+    u64 ret = 1;
 
     a = a % n;
 
@@ -71,9 +73,9 @@ long calcExp(long a, long b, long n)
     return ret;
 }
 
-long encrypt(long pt, long e, long n)
+u64 encrypt(long pt, u64 e, u64 n)
 {
-    long c;
+    u64 c;
 
     c = calcExp(pt, e, n);
     std::cout << pt<<"^"<<e<<" mod "<<n<<" = "<<c<<'\n';
@@ -81,9 +83,9 @@ long encrypt(long pt, long e, long n)
     return c;
 }
 
-long decrypt(long ct, long d, long n)
+u64 decrypt(long ct, u64 d, u64 n)
 {
-    long m;
+    u64 m;
 
     m = calcExp(ct, d, n);
     std::cout << ct<<"^"<<d<<" mod "<<n<<" = "<<m<<'\n';
@@ -91,22 +93,26 @@ long decrypt(long ct, long d, long n)
     return m;
 }
 
-int joinBlock(int a, int b)
+long joinBlock(long a, long b)
 {
     return (a * 1000) + b;
 }
 
 int main(void)
 {
-    std::string msg = "as";
-    int p = 20011;
-    int q = 50021;
-    int pt = joinBlock(msg[0], msg[1]);
-    int n = p * q;
-    int phi = (p - 1) * (q - 1);
-    int e = findE(phi);
-    int d = findD(e, phi);
-    int ct = encrypt(pt, e, n);
+    std::string msg = "  ";
+    std::string msg2 = "a)";
+    u64 p = 30011;
+    u64 q = 70001;
+    u64 pt = joinBlock(msg[0], msg[1]);
+    u64 pt2 = joinBlock(msg2[0], msg2[1]);
+    u64 n = p * q;
+    u64 phi = (p - 1) * (q - 1);
+    u64 e = findE(phi);
+    u64 d = findD(e, phi);
+    u64 ct = encrypt(pt, e, n);
+    u64 ct2 = encrypt(pt2, e, n);
     pt = decrypt(ct, d, n);
+    pt2 = decrypt(ct2, d, n);
 
 }
