@@ -30,7 +30,7 @@ int main(int argc, char const *argv[])
             switch(option)
             {
                 case 1:
-                    plaintext = readFile(infile);
+                    plaintext = "Hello World";//readFile(infile);
                     ciphertext = rsa.encrypt(plaintext);
                     writeFile(ciphertext,"encrypt.txt");                    
                     break;
@@ -41,7 +41,9 @@ int main(int argc, char const *argv[])
                     break;
                 case 3:
                     exit(0);
-
+                    break;
+                default:
+                    break;
             }
         }
     }

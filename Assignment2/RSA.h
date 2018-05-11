@@ -3,6 +3,7 @@
 #include <ctime>
 #include <cstdlib>
 #include <vector>
+#include <string>
 
 #define THRESH 20
 typedef unsigned long long int u64;
@@ -20,7 +21,8 @@ public:
     u64 findD(int ,int);
     std::string encrypt(std::string);
     std::string decrypt(std::string);
-    std::vector<int> getVec(std::string);
+    std::vector<int> getEncryptVec(std::string);
+    std::vector<int> getDecryptVec(std::string);
     u64 calcExp(u64, u64, u64);
 private:
     u64 p;

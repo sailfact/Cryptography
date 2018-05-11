@@ -119,7 +119,7 @@ u64 RSA::findD(int x , int t)
 
 std::string RSA::encrypt(std::string plaintext)
 {
-    std::vector<int> vec = getVec(plaintext);
+    std::vector<int> vec = getEncryptVec(plaintext);
     // std::vector<int> vec;
     // vec.push_back(plaintext[0]);
     std::vector<int> encrypt;
@@ -129,22 +129,19 @@ std::string RSA::encrypt(std::string plaintext)
     for(std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it)
     {
         c = calcExp(*it, e, n);
-        //std::cout << *it<<"^"<<e<<" mod "<<n<<" = "<<c<<'\n';
-        encrypt.push_back(c);
+        std::cout << *it<<"^"<<e<<" mod "<<n<<" = "<<c<<'\n';
+        ciphertext += c;
+        std::cout << ciphertext << '\n';
     }
-
-    for(std::vector<int>::iterator it = encrypt.begin(); it != encrypt.end(); ++it)
-    {
-        //ciphertext += *it;
-        ciphertext += (char)*it;
-    }
+    std::cout << ciphertext << '\n';
 
     return ciphertext;
 }
 
 std::string RSA::decrypt(std::string ciphertext)
 {
-    std::vector<int> vec = getVec(ciphertext);
+    std::cout << "Decrypt" << '\n';
+    std::vector<int> vec = getDecryptVec(ciphertext);
     // std::vector<int> vec;
     // vec.push_back(ciphertext[0]);
     std::vector<u64> decrypt;
@@ -153,23 +150,16 @@ std::string RSA::decrypt(std::string ciphertext)
 
     for(std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it)
     {
-
-        m = calcExp(*it, d, n) % n;
-        //std::cout << *it<<"^"<<d<<" mod "<<n<<"= "<<m<<'\n';
-        decrypt.push_back(m);
-    }
-
-    for(std::vector<u64>::iterator it = decrypt.begin(); it != decrypt.end(); ++it)
-    {
-        splitBlock(*it, &a, &b);
+        m = calcExp(*it, d, n);
+        std::cout << *it<<"^"<<d<<" mod "<<n<<"= "<<m<<'\n';
+        splitBlock(m, &a, &b);
         plaintext += (char)a + (char)b;
-        // plaintext += (char)*it;
     }
-
+    std::cout << plaintext << '\n';
     return plaintext;
 }
 
-std::vector<int> RSA::getVec(std::string text)
+std::vector<int> RSA::getEncryptVec(std::string text)
 {
     std::vector<int> v;
     std::string temp = "";
@@ -196,6 +186,28 @@ std::vector<int> RSA::getVec(std::string text)
 
     return v;
 }
+
+std::vector<int> RSA::getDecryptVec(std::string ciphertext)
+{
+    std::vector<int> v;
+    std::string temp = "";
+
+    for (int i = 0; i < ciphertext.size(); i++)
+    {
+        if (ciphertext[i] != ' ')
+        {
+            temp += ciphertext[i];
+        }
+        else
+        {
+            v.push_back(atoi(temp.c_str()));
+            temp = "";
+        }
+    }
+
+    return v;
+}
+
 
 u64 RSA::calcExp(u64 a, u64 b, u64 n)
 {
