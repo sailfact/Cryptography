@@ -6,13 +6,15 @@
 #include <vector>
 #include <string>
 
-#define THRESH 20
+// threshold for prime testing
+#define THRESH 5
+
+// defined a new datatype for maximum int storage
 typedef unsigned long long int u64;
 
 class RSA
 {
 public:
-    RSA();
     RSA(int, int);
     int extendedGcd(int , int , int *, int *);
     bool isPrime(int, int);

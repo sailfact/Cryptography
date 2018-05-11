@@ -1,15 +1,13 @@
+/// RSA.cpp
+/// Author : Ross Curley
+/// StdID : 19098081
+/// implmentation of RSA public key encryption algorithm
+/// in C++
 #include "RSA.h"
-
-RSA::RSA()
-{
-    this->p = 17;
-    this->q = 11;
-    this->n = p * q;
-    this->phi = (p - 1) * (q - 1);
-    this->e = 7;
-    this->d = 23;
-}
-
+/// RSA::RSA
+/// Constructor for RSA class
+/// takes two ints checks if they are prime and between 10,000 and 100,000
+/// then calculates the public and private keys required for RSA algorithm 
 RSA::RSA(int p, int q)
 {
     if ((p >= 10000)&&(p <= 100000)&&(q >= 10000)&&(q <= 100000)
@@ -28,17 +26,15 @@ RSA::RSA(int p, int q)
         {
             throw msg;
         }
-        // std::cout << "p   = " << p << '\n'
-        //           << "q   = " << q << '\n'
-        //           << "n   = " << n << '\n'
-        //           << "phi = " << phi << '\n'
-        //           << "e   = " << e << '\n'
-        //           << "d   = " << d << '\n';
     }
     else
         throw "ERROR : invalid keys\n";
 }
 
+/// RSA::extendedGcd
+/// c++ implementation of the Extended Euclidean Alogorithm
+/// returns gcd aswell as x and y via reference
+/// where ax * by = 1
 int RSA::extendedGcd(int a, int b, int *x, int *y)
 {
     int tempX, tempY, gcd;
@@ -79,11 +75,17 @@ bool RSA::isPrime(int p, int t)
     return true;
 }
 
+/// RSA::joinBlock
+/// takes two ascii codes and returns them as one block
 int RSA::joinBlock(int a, int b)
 {
     return (a * 1000) + b;
 }
 
+/// RSA::splitBlock
+/// takes a block 
+/// and splits it into two ascii codes
+/// and returns them via reference
 void RSA::splitBlock(u64 block, u64 *a, u64 *b)
 {
     *a = block / 1000;
@@ -105,6 +107,9 @@ u64 RSA::findE(u64 a)
     return temp;
 }
 
+/// RSA::findD
+/// uses extended euclidean algorithm to find 
+/// the private key d
 u64 RSA::findD(int a, int b)
 {
     int x, y;
@@ -116,6 +121,7 @@ u64 RSA::findD(int a, int b)
         throw "error getting d key";
 }
 
+/// RSA::encrypt
 std::string RSA::encrypt(std::string plaintext)
 {
     std::vector<int> vec = getEncryptVec(plaintext);
@@ -135,9 +141,12 @@ std::string RSA::encrypt(std::string plaintext)
     return ciphertext;
 }
 
+/// RSA::decrypt
+/// takes ciphertext and turns it into a vector for every block
+/// then for every element in the vector 
+/// decrypts the block 
 std::string RSA::decrypt(std::string ciphertext)
 {
-    std::cout << "Decrypt" << '\n';
     std::vector<int> vec = getDecryptVec(ciphertext);
     std::vector<u64> decrypt;
     std::string plaintext = "";
@@ -145,16 +154,19 @@ std::string RSA::decrypt(std::string ciphertext)
 
     for(std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it)
     {
-        m = calcExp(*it, d, n);
-        // std::cout << *it<<"^"<<d<<" mod "<<n<<"= "<<m<<'\n';
-        splitBlock(m, &a, &b);
-        plaintext.push_back((char)a);
+        m = calcExp(*it, d, n);         // decrypt block
+        splitBlock(m, &a, &b);          // split block
+        plaintext.push_back((char)a);   // add a and b to plain text
         plaintext.push_back((char)b);
     }
     
     return plaintext;
 }
 
+/// RSA::getEncryptVec
+/// gets every 2 characters in the text 
+/// joins them into one block and places it into a vector
+/// if there is an odd amount of characters it is padded with zero/null
 std::vector<int> RSA::getEncryptVec(std::string text)
 {
     std::vector<int> v;
@@ -183,6 +195,9 @@ std::vector<int> RSA::getEncryptVec(std::string text)
     return v;
 }
 
+/// RSA::getDecryptVec
+/// gets each individual block from the cipher text and places them 
+/// in a vector
 std::vector<int> RSA::getDecryptVec(std::string ciphertext)
 {
     std::vector<int> v;
@@ -204,7 +219,9 @@ std::vector<int> RSA::getDecryptVec(std::string ciphertext)
     return v;
 }
 
-
+/// RSA::calcExp
+/// calculates a^n mod n
+/// using Exponentiation in Modular Arithmetic
 u64 RSA::calcExp(u64 a, u64 b, u64 n)
 {
     u64 ret = 1;
