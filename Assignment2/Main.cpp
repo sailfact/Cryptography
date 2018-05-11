@@ -19,32 +19,38 @@ int main(int argc, char const *argv[])
             p = 20011;
             q = 50021;
         }
-
-        RSA rsa(p,q);
-        std::string plaintext = "";
-        std::string ciphertext = "";
-        while (1)
+        try
         {
-            std::cout << "Enter [1] to encrypt\nEnter [2] to decrypt\nEnter [3] to exit" << std::endl;
-            std::cin >> option;
-            switch(option)
+            RSA rsa(p,q);
+            std::string plaintext = "";
+            std::string ciphertext = "";
+            while (1)
             {
-                case 1:
-                    plaintext = "Hello World";//readFile(infile);
-                    ciphertext = rsa.encrypt(plaintext);
-                    writeFile(ciphertext,"encrypt.txt");                    
-                    break;
-                case 2:
-                    ciphertext = readFile("encrypt.txt");
-                    plaintext = rsa.decrypt(ciphertext);
-                    writeFile(plaintext, "decrypt.txt");
-                    break;
-                case 3:
-                    exit(0);
-                    break;
-                default:
-                    break;
+                std::cout << "Enter [1] to encrypt\nEnter [2] to decrypt\nEnter [3] to exit" << std::endl;
+                std::cin >> option;
+                switch(option)
+                {
+                    case 1:
+                        plaintext = readFile(infile);
+                        ciphertext = rsa.encrypt(plaintext);
+                        writeFile(ciphertext,"encrypt.txt");                    
+                        break;
+                    case 2:
+                        ciphertext = readFile("encrypt.txt");
+                        plaintext = rsa.decrypt(ciphertext);
+                        writeFile(plaintext, "decrypt.txt");
+                        break;
+                    case 3:
+                        exit(0);
+                        break;
+                    default:
+                        break;
+                }
             }
+        }
+        catch(const char* msg)
+        {
+            std::cerr << msg << '\n';           
         }
     }
     else

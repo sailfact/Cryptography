@@ -20,14 +20,21 @@ RSA::RSA(int p, int q)
         this->n = p * q;
         this->phi = (p - 1) * (q - 1);
         this->e = findE(phi);
-        this->d = findD(e, phi);
-        std::cout << "p   = " << p << '\n'
-                  << "q   = " << q << '\n'
-                  << "n   = " << n << '\n'
-                  << "phi = " << phi << '\n'
-                  << "e   = " << e << '\n'
-                  << "d   = " << d << '\n';
-      }
+        try
+        {
+             this->d = findD(e, phi);
+        }
+        catch (const char *msg)
+        {
+            throw msg;
+        }
+        // std::cout << "p   = " << p << '\n'
+        //           << "q   = " << q << '\n'
+        //           << "n   = " << n << '\n'
+        //           << "phi = " << phi << '\n'
+        //           << "e   = " << e << '\n'
+        //           << "d   = " << d << '\n';
+    }
     else
         throw "ERROR : invalid keys\n";
 }
@@ -98,30 +105,20 @@ u64 RSA::findE(u64 a)
     return temp;
 }
 
-u64 RSA::findD(int x , int t)
+u64 RSA::findD(int a, int b)
 {
-    // int x, y;
-    // extendedGcd(a,b,&x,&y);
+    int x, y;
+    extendedGcd(a,b,&x,&y);
     
-    // if((a * x) + (b * y) == 1)
-    //     return x;
-    // else 
-    //     throw "error getting d key";
-
-    u64 k = 1;
-    while (1)
-    {
-        k = k + t;
-        if (k % x == 0)
-            return (k / x);
-    }
+    if((a * x) + (b * y) == 1)
+        return x;
+    else 
+        throw "error getting d key";
 }
 
 std::string RSA::encrypt(std::string plaintext)
 {
     std::vector<int> vec = getEncryptVec(plaintext);
-    // std::vector<int> vec;
-    // vec.push_back(plaintext[0]);
     std::vector<int> encrypt;
     std::string ciphertext = "";
     u64 c, a, b;
@@ -129,11 +126,11 @@ std::string RSA::encrypt(std::string plaintext)
     for(std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it)
     {
         c = calcExp(*it, e, n);
-        std::cout << *it<<"^"<<e<<" mod "<<n<<" = "<<c<<'\n';
-        ciphertext += c;
-        std::cout << ciphertext << '\n';
+        // std::cout << *it<<"^"<<e<<" mod "<<n<<" = "<<c<<'\n';
+        std::stringstream convert;
+        convert << c;
+        ciphertext += convert.str() + " ";
     }
-    std::cout << ciphertext << '\n';
 
     return ciphertext;
 }
@@ -142,8 +139,6 @@ std::string RSA::decrypt(std::string ciphertext)
 {
     std::cout << "Decrypt" << '\n';
     std::vector<int> vec = getDecryptVec(ciphertext);
-    // std::vector<int> vec;
-    // vec.push_back(ciphertext[0]);
     std::vector<u64> decrypt;
     std::string plaintext = "";
     u64 m, a, b;
@@ -151,11 +146,12 @@ std::string RSA::decrypt(std::string ciphertext)
     for(std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it)
     {
         m = calcExp(*it, d, n);
-        std::cout << *it<<"^"<<d<<" mod "<<n<<"= "<<m<<'\n';
+        // std::cout << *it<<"^"<<d<<" mod "<<n<<"= "<<m<<'\n';
         splitBlock(m, &a, &b);
-        plaintext += (char)a + (char)b;
+        plaintext.push_back((char)a);
+        plaintext.push_back((char)b);
     }
-    std::cout << plaintext << '\n';
+    
     return plaintext;
 }
 
