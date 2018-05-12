@@ -17,7 +17,7 @@ class RSA
 public:
     RSA(int, int);
     int extendedGcd(int , int , int *, int *);
-    bool isPrime(int, int);
+    bool isPrime(u64, int);
     int joinBlock(int, int);
     void splitBlock(u64, u64 *, u64 *);
     u64 findE(u64);

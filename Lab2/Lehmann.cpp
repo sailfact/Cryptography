@@ -5,6 +5,24 @@
 
 using namespace std;
 
+long calcExp(long a, long b, long n)
+{
+    long ret = 1;
+
+    a = a % n;
+
+    while (b > 0)
+    {
+        if (b & 1)
+            ret = (ret * a) % n;
+
+        b = b >> 1;
+        a = (a * a) % n;
+    }
+
+    return ret;
+}
+
 // works for primes bigger than 2
 bool isPrime(int p, int t)
 {
@@ -12,19 +30,21 @@ bool isPrime(int p, int t)
     int a = 0;
     int e = 0;
     int r;
+    bool ret;
 
     for (int i = 0; i < t; i ++)
     {
         a = (rand()%p-1)+1;
         e = (p-1)/2;
-        r = ((int)pow(a,e)) % p;
-        if (r % p == p - 1)
-        {
-             return false;
-        }
+        r = calcExp(a,e,p);
+        cout << a << "^" << e << " mod " << p << " = " << r << endl;
+        if (r % p != 1 && r % p != p - 1)
+            return false;
+        else
+            ret = true;
     }
 
-    return true;
+    return ret;
 }
 
 int main(int argc, char **argv)

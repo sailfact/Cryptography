@@ -7,11 +7,10 @@
 /// RSA::RSA
 /// Constructor for RSA class
 /// takes two ints checks if they are prime and between 10,000 and 100,000
-/// then calculates the public and private keys required for RSA algorithm 
+/// then calculates the public and private keys required for RSA algorithm
 RSA::RSA(int p, int q)
 {
-    if ((p >= 10000)&&(p <= 100000)&&(q >= 10000)&&(q <= 100000)
-    &&(isPrime(p, THRESH) && isPrime(q, THRESH)))
+    if ((p >= 10000) && (p <= 100000) && (q >= 10000) && (q <= 100000) && (isPrime(p, THRESH) && isPrime(q, THRESH)))
     {
         this->p = p;
         this->q = q;
@@ -20,7 +19,7 @@ RSA::RSA(int p, int q)
         this->e = findE(phi);
         try
         {
-             this->d = findD(e, phi);
+            this->d = findD(e, phi);
         }
         catch (const char *msg)
         {
@@ -34,7 +33,7 @@ RSA::RSA(int p, int q)
 /// RSA::extendedGcd
 /// c++ implementation of the Extended Euclidean Alogorithm
 /// returns gcd aswell as x and y via reference
-/// where ax * by = 1
+/// where ax + by = gcd
 int RSA::extendedGcd(int a, int b, int *x, int *y)
 {
     int tempX, tempY, gcd;
@@ -56,23 +55,26 @@ int RSA::extendedGcd(int a, int b, int *x, int *y)
 /// isPrime
 /// uses Lehmann Algorithm to test
 /// validity of Prime given to a certain threshold
-bool RSA::isPrime(int p, int t)
+bool RSA::isPrime(u64 p, int t)
 {
     srand((unsigned)time(NULL));
     int a = 0;
     int e = 0;
     int r;
+    bool ret;
 
     for (int i = 0; i < t; i ++)
     {
-        a = (rand() % p - 1) + 1;
-        e = (p - 1) / 2;
-        r = ((int)pow(a, e)) % p;
-        if (r % p == p - 1)
-             return false;
+        a = (rand()%p-1)+1;
+        e = (p-1)/2;
+        r = calcExp(a,e,p);
+        if (r % p != 1 && r % p != p - 1)
+            return false;
+        else
+            ret = true;
     }
 
-    return true;
+    return ret;
 }
 
 /// RSA::joinBlock
@@ -83,7 +85,7 @@ int RSA::joinBlock(int a, int b)
 }
 
 /// RSA::splitBlock
-/// takes a block 
+/// takes a block
 /// and splits it into two ascii codes
 /// and returns them via reference
 void RSA::splitBlock(u64 block, u64 *a, u64 *b)
@@ -93,14 +95,14 @@ void RSA::splitBlock(u64 block, u64 *a, u64 *b)
 }
 
 /// RSA::findE
-/// finds a u64 integer such that 
+/// finds a u64 integer such that
 /// 1 < e < phi & gcd(e, phi) = 1
 u64 RSA::findE(u64 a)
 {
     int x, y;
     srand((unsigned)time(NULL));
 
-    int temp = (rand()%a/2)+1;
+    int temp = (rand() % a / 2) + 1;
     while (extendedGcd(temp, a, &x, &y) != 1)
         --temp;
 
@@ -108,16 +110,16 @@ u64 RSA::findE(u64 a)
 }
 
 /// RSA::findD
-/// uses extended euclidean algorithm to find 
+/// uses extended euclidean algorithm to find
 /// the private key d
 u64 RSA::findD(int a, int b)
 {
     int x, y;
-    extendedGcd(a,b,&x,&y);
-    
-    if((a * x) + (b * y) == 1)
+    extendedGcd(a, b, &x, &y);
+
+    if ((a * x) + (b * y) == 1)
         return x;
-    else 
+    else
         throw "error getting d key";
 }
 
@@ -129,10 +131,10 @@ std::string RSA::encrypt(std::string plaintext)
     std::string ciphertext = "";
     u64 c, a, b;
 
-    for(std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it)
+    for (std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it)
     {
         c = calcExp(*it, e, n);
-        // std::cout << *it<<"^"<<e<<" mod "<<n<<" = "<<c<<'\n';
+        std::cout << *it<<"^"<<e<<" mod "<<n<<" = "<<c<<'\n';
         std::stringstream convert;
         convert << c;
         ciphertext += convert.str() + " ";
@@ -143,8 +145,8 @@ std::string RSA::encrypt(std::string plaintext)
 
 /// RSA::decrypt
 /// takes ciphertext and turns it into a vector for every block
-/// then for every element in the vector 
-/// decrypts the block 
+/// then for every element in the vector
+/// decrypts the block
 std::string RSA::decrypt(std::string ciphertext)
 {
     std::vector<int> vec = getDecryptVec(ciphertext);
@@ -152,19 +154,20 @@ std::string RSA::decrypt(std::string ciphertext)
     std::string plaintext = "";
     u64 m, a, b;
 
-    for(std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it)
+    for (std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it)
     {
-        m = calcExp(*it, d, n);         // decrypt block
-        splitBlock(m, &a, &b);          // split block
-        plaintext.push_back((char)a);   // add a and b to plain text
+        m = calcExp(*it, d, n);       // decrypt block
+        std::cout << *it<<"^"<<e<<" mod "<<n<<" = "<<m<<'\n';
+        splitBlock(m, &a, &b);        // split block
+        plaintext.push_back((char)a); // add a and b to plain text
         plaintext.push_back((char)b);
     }
-    
+
     return plaintext;
 }
 
 /// RSA::getEncryptVec
-/// gets every 2 characters in the text 
+/// gets every 2 characters in the text
 /// joins them into one block and places it into a vector
 /// if there is an odd amount of characters it is padded with zero/null
 std::vector<int> RSA::getEncryptVec(std::string text)
@@ -172,7 +175,7 @@ std::vector<int> RSA::getEncryptVec(std::string text)
     std::vector<int> v;
     std::string temp = "";
     int count = 0;
-    char a,b;
+    char a, b;
 
     for (int i = 0; i < text.length(); ++i)
     {
@@ -184,7 +187,7 @@ std::vector<int> RSA::getEncryptVec(std::string text)
             v.push_back(joinBlock((int)a, (int)b));
             temp = "";
         }
-        else if (i == text.length()-1)
+        else if (i == text.length() - 1)
         {
             // if the string is odd add padding to the end
             a = temp[0];
@@ -196,7 +199,7 @@ std::vector<int> RSA::getEncryptVec(std::string text)
 }
 
 /// RSA::getDecryptVec
-/// gets each individual block from the cipher text and places them 
+/// gets each individual block from the cipher text and places them
 /// in a vector
 std::vector<int> RSA::getDecryptVec(std::string ciphertext)
 {
@@ -233,7 +236,7 @@ u64 RSA::calcExp(u64 a, u64 b, u64 n)
         if (b & 1)
             ret = (ret * a) % n;
 
-        b = b>>1;
+        b = b >> 1;
         a = (a * a) % n;
     }
 

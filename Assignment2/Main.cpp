@@ -9,7 +9,7 @@ int main(int argc, char const *argv[])
     if (argc > 1)
     {
         const char * infile = argv[1];
-        if (argc == 3)
+        if (argc == 4)
         {
             p = atoi(argv[2]);
             q = atoi(argv[3]);
@@ -31,7 +31,7 @@ int main(int argc, char const *argv[])
                 switch(option)
                 {
                     case 1:
-                        plaintext = readFile(infile);
+                        plaintext = "Hello World";//readFile(infile);
                         ciphertext = rsa.encrypt(plaintext);
                         writeFile(ciphertext,"encrypt.txt");                    
                         break;

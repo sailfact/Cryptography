@@ -104,15 +104,11 @@ int main(void)
     std::string msg2 = "a)";
     u64 p = 30011;
     u64 q = 70001;
-    u64 pt = joinBlock(msg[0], msg[1]);
-    u64 pt2 = joinBlock(msg2[0], msg2[1]);
+    u64 pt = 88;
     u64 n = p * q;
     u64 phi = (p - 1) * (q - 1);
     u64 e = findE(phi);
     u64 d = findD(e, phi);
     u64 ct = encrypt(pt, e, n);
-    u64 ct2 = encrypt(pt2, e, n);
     pt = decrypt(ct, d, n);
-    pt2 = decrypt(ct2, d, n);
-
 }
