@@ -134,7 +134,6 @@ std::string RSA::encrypt(std::string plaintext)
     for (std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it)
     {
         c = calcExp(*it, e, n);
-        std::cout << *it<<"^"<<e<<" mod "<<n<<" = "<<c<<'\n';
         std::stringstream convert;
         convert << c;
         ciphertext += convert.str() + " ";
@@ -157,7 +156,6 @@ std::string RSA::decrypt(std::string ciphertext)
     for (std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it)
     {
         m = calcExp(*it, d, n);       // decrypt block
-        std::cout << *it<<"^"<<e<<" mod "<<n<<" = "<<m<<'\n';
         splitBlock(m, &a, &b);        // split block
         plaintext.push_back((char)a); // add a and b to plain text
         plaintext.push_back((char)b);
