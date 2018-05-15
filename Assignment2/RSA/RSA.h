@@ -1,3 +1,5 @@
+#ifndef RSA_H
+#define RSA_H
 #include <iostream>
 #include <sstream>
 #include <cmath>
@@ -35,3 +37,4 @@ private:
     u64 phi;
     u64 d;
 };
+#endif

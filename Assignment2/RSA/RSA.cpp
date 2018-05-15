@@ -124,6 +124,8 @@ u64 RSA::findD(int a, int b)
 }
 
 /// RSA::encrypt
+/// takes plaintext turns it into a vector for every two characters 
+/// then for each block encrypt with rsa 
 std::string RSA::encrypt(std::string plaintext)
 {
     std::vector<int> vec = getEncryptVec(plaintext);
@@ -134,10 +136,10 @@ std::string RSA::encrypt(std::string plaintext)
     for (std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it)
     {
     
-        c = calcExp(*it, e, n);
+        c = calcExp(*it, e, n); // encrypt
         std::stringstream convert;
         convert << c;
-        ciphertext += convert.str() + " ";
+        ciphertext += convert.str() + " ";  // add to cipher text seperated by a space
     }
 
     return ciphertext;

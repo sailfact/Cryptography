@@ -1,3 +1,5 @@
+#ifndef IO_H
+#define IO_H
 #include <iostream>
 #include <fstream>
 #include <streambuf>
@@ -5,3 +7,4 @@
 
 std::string readFile(const char *);
 void writeFile(std::string, const char *);
+#endif
