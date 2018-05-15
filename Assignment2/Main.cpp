@@ -33,7 +33,7 @@ int main(int argc, char const *argv[])
                     case 1:
                         plaintext = readFile(infile);
                         ciphertext = rsa.encrypt(plaintext);
-                        writeFile(ciphertext,"encrypt.txt");                    
+                        writeFile(ciphertext,"encrypt.txt");           
                         break;
                     case 2:
                         ciphertext = readFile("encrypt.txt");

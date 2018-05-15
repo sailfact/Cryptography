@@ -133,6 +133,7 @@ std::string RSA::encrypt(std::string plaintext)
 
     for (std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it)
     {
+    
         c = calcExp(*it, e, n);
         std::stringstream convert;
         convert << c;
