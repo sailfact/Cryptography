@@ -88,7 +88,7 @@ int RSA::joinBlock(int a, int b)
 /// takes a block
 /// and splits it into two ascii codes
 /// and returns them via reference
-void RSA::splitBlock(u64 block, u64 *a, u64 *b)
+void RSA::splitBlock(int block, int *a, int *b)
 {
     *a = block / 1000;
     *b = block % 1000;
@@ -102,11 +102,11 @@ u64 RSA::findE(u64 a)
     int x, y;
     srand((unsigned)time(NULL));
 
-    int temp = (rand() % a / 2) + 1;
-    while (extendedGcd(temp, a, &x, &y) != 1)
-        --temp;
+    int key = (rand() % a / 2) + 1;
+    while (extendedGcd(key, a, &x, &y) != 1)
+        --key;
 
-    return temp;
+    return key;
 }
 
 /// RSA::findD
@@ -154,7 +154,7 @@ std::string RSA::decrypt(std::string ciphertext)
     std::vector<int> vec = getDecryptVec(ciphertext);
     std::vector<u64> decrypt;
     std::string plaintext = "";
-    u64 m, a, b;
+    int m, a, b;
 
     for (std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it)
     {
@@ -202,16 +202,16 @@ std::vector<int> RSA::getEncryptVec(std::string text)
 /// RSA::getDecryptVec
 /// gets each individual block from the cipher text and places them
 /// in a vector
-std::vector<int> RSA::getDecryptVec(std::string ciphertext)
+std::vector<int> RSA::getDecryptVec(std::string text)
 {
     std::vector<int> v;
     std::string temp = "";
 
-    for (int i = 0; i < ciphertext.size(); i++)
+    for (int i = 0; i < text.size(); i++)
     {
-        if (ciphertext[i] != ' ')
+        if (text[i] != ' ')
         {
-            temp += ciphertext[i];
+            temp += text[i];
         }
         else
         {

@@ -21,7 +21,7 @@ public:
     int extendedGcd(int , int , int *, int *);
     bool isPrime(u64, int);
     int joinBlock(int, int);
-    void splitBlock(u64, u64 *, u64 *);
+    void splitBlock(int, int *, int *);
     u64 findE(u64);
     u64 findD(int ,int);
     std::string encrypt(std::string);
