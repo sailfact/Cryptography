@@ -65,13 +65,13 @@ bool RSA::isPrime(u64 p, int t)
 
     for (int i = 0; i < t; i ++)
     {
-        a = (rand()%p-1)+1;
-        e = (p-1)/2;
-        r = calcExp(a,e,p);
+        a = (rand()%p-1)+1; // get a random a for every loop
+        e = (p-1)/2;    
+        r = calcExp(a,e,p); // calc a^e mod p
         if (r % p != 1 && r % p != p - 1)
-            return false;
+            return false;   // p is not a prime
         else
-            ret = true;
+            ret = true; // p has a 50% chance of being prime
     }
 
     return ret;
@@ -101,7 +101,6 @@ u64 RSA::findE(u64 a)
 {
     int x, y;
     srand((unsigned)time(NULL));
-
     int key = (rand() % a / 2) + 1;
     while (extendedGcd(key, a, &x, &y) != 1)
         --key;
@@ -116,9 +115,8 @@ u64 RSA::findD(int a, int b)
 {
     int x, y;
     extendedGcd(a, b, &x, &y);
-
     if ((a * x) + (b * y) == 1)
-        return x;
+        return x;   // d key
     else
         throw "error getting d key";
 }
@@ -128,17 +126,16 @@ u64 RSA::findD(int a, int b)
 /// then for each block encrypt with rsa 
 std::string RSA::encrypt(std::string plaintext)
 {
-    std::vector<int> vec = getEncryptVec(plaintext);
+    std::vector<int> vec = getEncryptVec(plaintext); //convert string to vector
     std::vector<int> encrypt;
     std::string ciphertext = "";
     u64 c, a, b;
-
+    // iterate through vector
     for (std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it)
     {
-    
         c = calcExp(*it, e, n); // encrypt
         std::stringstream convert;
-        convert << c;
+        convert << c;   // convert c to string
         ciphertext += convert.str() + " ";  // add to cipher text seperated by a space
     }
 
@@ -151,11 +148,11 @@ std::string RSA::encrypt(std::string plaintext)
 /// decrypts the block
 std::string RSA::decrypt(std::string ciphertext)
 {
-    std::vector<int> vec = getDecryptVec(ciphertext);
+    std::vector<int> vec = getDecryptVec(ciphertext); // convert string to vector
     std::vector<u64> decrypt;
     std::string plaintext = "";
     int m, a, b;
-
+    // iterate through vector
     for (std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it)
     {
         m = calcExp(*it, d, n);       // decrypt block
@@ -210,9 +207,7 @@ std::vector<int> RSA::getDecryptVec(std::string text)
     for (int i = 0; i < text.size(); i++)
     {
         if (text[i] != ' ')
-        {
             temp += text[i];
-        }
         else
         {
             v.push_back(atoi(temp.c_str()));
@@ -225,13 +220,12 @@ std::vector<int> RSA::getDecryptVec(std::string text)
 
 /// RSA::calcExp
 /// calculates a^n mod n
-/// using Exponentiation in Modular Arithmetic
+/// using Binary Modular Exponentiation Arithmetic
+/// as explained in the book
 u64 RSA::calcExp(u64 a, u64 b, u64 n)
 {
     u64 ret = 1;
-
     a = a % n;
-
     while (b > 0)
     {
         if (b & 1)
@@ -240,6 +234,5 @@ u64 RSA::calcExp(u64 a, u64 b, u64 n)
         b = b >> 1;
         a = (a * a) % n;
     }
-
     return ret;
 }

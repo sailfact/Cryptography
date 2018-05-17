@@ -1,3 +1,4 @@
+/// RSA.h
 #ifndef RSA_H
 #define RSA_H
 #include <iostream>
@@ -7,10 +8,8 @@
 #include <cstdlib>
 #include <vector>
 #include <string>
-
 // threshold for prime testing
 #define THRESH 5
-
 // defined a new datatype for maximum int storage
 typedef unsigned long long int u64;
 

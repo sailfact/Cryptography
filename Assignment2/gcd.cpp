@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 /// gcd
-/// calculate the the greatest common divisor
+/// calculate the greatest common divisor
 /// recursively
 int gcd(int a, int b)
 {

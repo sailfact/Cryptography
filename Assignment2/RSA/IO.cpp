@@ -1,4 +1,7 @@
+/// IO.cpp
 #include "IO.h"
+/// readFile
+/// Opens given files and returns file contents as a string
 
 std::string readFile(const char *infile)
 {
@@ -16,7 +19,8 @@ std::string readFile(const char *infile)
     ifs.close();
     return text;
 }
-
+/// writeFile
+/// writes given text to the given file
 void writeFile(std::string text, const char *outfile)
 {
     std::ofstream ofs;

@@ -1,3 +1,4 @@
+/// Main.cpp
 #include "RSA.h"
 #include "IO.h"
 #include <cstdlib>
@@ -9,9 +10,9 @@ int main(int argc, char const *argv[])
     if (argc > 1)
     {
         const char * infile = argv[1];
-        if (argc == 4)
+        if (argc == 4)  // get p and q from command line
         {
-            p = atoi(argv[2]);
+            p = atoi(argv[2]);     
             q = atoi(argv[3]);
         }
         else    // if user doesn't enter primes assign default ones
@@ -21,7 +22,7 @@ int main(int argc, char const *argv[])
         }
         try
         {
-            RSA rsa(p,q);
+            RSA rsa(p,q);   // construct rsa with p and q
             std::string plaintext = "";
             std::string ciphertext = "";
             while (1)
@@ -30,12 +31,12 @@ int main(int argc, char const *argv[])
                 std::cin >> option;
                 switch(option)
                 {
-                    case 1:
+                    case 1: // encrypt
                         plaintext = readFile(infile);
                         ciphertext = rsa.encrypt(plaintext);
                         writeFile(ciphertext,"encrypt.txt");           
                         break;
-                    case 2:
+                    case 2: // decrypt
                         ciphertext = readFile("encrypt.txt");
                         plaintext = rsa.decrypt(ciphertext);
                         writeFile(plaintext, "decrypt.txt");
@@ -48,13 +49,12 @@ int main(int argc, char const *argv[])
                 }
             }
         }
-        catch(const char* msg)
-        {
+        catch(const char* msg)  // if keys are incorrect print error
+        {   
             std::cerr << msg << '\n';           
         }
     }
     else
         std::cerr << "ERROR : Not enough arguments" << std::endl;
-
     return 0;
 }
